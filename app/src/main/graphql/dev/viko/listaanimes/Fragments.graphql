@@ -1,0 +1,55 @@
+fragment MediaCore on Media {
+  id
+  type
+  title { romaji english native }
+  synonyms
+  format
+  status
+  episodes
+  chapters
+  volumes
+  duration
+  coverImage { large medium color }
+  bannerImage
+  season
+  seasonYear
+  weightedScore
+  popularity
+  genres
+  countryOfOrigin
+  isFavourite
+  isAdult
+  nextAiringEpisode { episode airingAt }
+  startDate { year month day }
+}
+
+fragment EntryFields on MediaList {
+  id
+  mediaId
+  status
+  score(format: POINT_100)
+  progress
+  progressVolumes
+  repeat
+  notes
+  private
+  startedAt { year month day }
+  completedAt { year month day }
+  updatedAt
+  createdAt
+}
+
+fragment ReviewFields on Review {
+  id
+  userId
+  mediaId
+  summary
+  body(asHtml: false)
+  score
+  private
+  rating
+  ratingAmount
+  createdAt
+  updatedAt
+  user { id name avatar { medium } }
+}

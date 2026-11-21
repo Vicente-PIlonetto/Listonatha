@@ -1,0 +1,170 @@
+query Viewer {
+  Viewer {
+    id
+    name
+    about(asHtml: false)
+    avatar { large }
+    bannerImage
+    options { titleLanguage }
+    statistics {
+      anime { count meanScore minutesWatched episodesWatched }
+      manga { count meanScore chaptersRead volumesRead }
+    }
+    favourites {
+      anime(perPage: 50) { nodes { ...MediaCore } }
+      manga(perPage: 50) { nodes { ...MediaCore } }
+      characters(perPage: 50) { nodes { id name { full } image { medium } } }
+    }
+  }
+}
+
+query ListCollection($userId: Int!, $type: MediaType!, $chunk: Int!) {
+  MediaListCollection(userId: $userId, type: $type, chunk: $chunk, perChunk: 500, forceSingleCompletedList: true) {
+    hasNextChunk
+    lists {
+      entries {
+        ...EntryFields
+        media { ...MediaCore }
+      }
+    }
+  }
+}
+
+query MediaDetail($id: Int!) {
+  Media(id: $id) {
+    ...MediaCore
+    description(asHtml: false)
+    meanScore
+    source(version: 3)
+    siteUrl
+    endDate { year month day }
+    studios { edges { isMain node { id name } } }
+    staff(perPage: 8, sort: [RELEVANCE, ID]) { edges { role node { id name { full } } } }
+    tags { name rank isMediaSpoiler isGeneralSpoiler }
+    externalLinks { id url site type language color icon isDisabled }
+    relations { edges { relationType(version: 2) node { ...MediaCore } } }
+    characters(perPage: 12, sort: [ROLE, RELEVANCE, ID]) { edges { role node { id name { full } image { medium } } } }
+    recommendations(perPage: 12, sort: [RATING_DESC]) { nodes { mediaRecommendation { ...MediaCore } } }
+    reviews(perPage: 6, sort: [RATING_DESC]) { nodes { ...ReviewFields } }
+    mediaListEntry { ...EntryFields }
+  }
+}
+
+query AiringSchedule($from: Int!, $to: Int!, $mediaIds: [Int], $page: Int!) {
+  Page(page: $page, perPage: 50) {
+    pageInfo { hasNextPage lastPage }
+    airingSchedules(airingAt_greater: $from, airingAt_lesser: $to, mediaId_in: $mediaIds, sort: [TIME]) {
+      id
+      episode
+      airingAt
+      media { ...MediaCore }
+    }
+  }
+}
+
+query DiscoverAnime($season: MediaSeason!, $year: Int!, $nextSeason: MediaSeason!, $nextYear: Int!, $adult: Boolean, $genreNotIn: [String], $tagNotIn: [String]) {
+  trending: Page(perPage: 20) { media(type: ANIME, sort: [TRENDING_DESC, POPULARITY_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  season: Page(perPage: 20) { media(type: ANIME, season: $season, seasonYear: $year, sort: [POPULARITY_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  nextSeason: Page(perPage: 20) { media(type: ANIME, season: $nextSeason, seasonYear: $nextYear, sort: [POPULARITY_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  recent: Page(perPage: 20) { media(type: ANIME, sort: [ID_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  popular: Page(perPage: 20) { media(type: ANIME, sort: [POPULARITY_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  top: Page(perPage: 20) { media(type: ANIME, sort: [SCORE_DESC], isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+}
+
+query DiscoverManga($country: CountryCode, $formats: [MediaFormat], $adult: Boolean, $genreNotIn: [String], $tagNotIn: [String]) {
+  trending: Page(perPage: 20) { media(type: MANGA, sort: [TRENDING_DESC, POPULARITY_DESC], countryOfOrigin: $country, format_in: $formats, isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  recent: Page(perPage: 20) { media(type: MANGA, sort: [ID_DESC], countryOfOrigin: $country, format_in: $formats, isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  popular: Page(perPage: 20) { media(type: MANGA, sort: [POPULARITY_DESC], countryOfOrigin: $country, format_in: $formats, isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+  top: Page(perPage: 20) { media(type: MANGA, sort: [SCORE_DESC], countryOfOrigin: $country, format_in: $formats, isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) { ...MediaCore } }
+}
+
+query Browse(
+  $page: Int!, $type: MediaType!, $sort: [MediaSort], $search: String,
+  $season: MediaSeason, $seasonYear: Int, $formats: [MediaFormat],
+  $genres: [String], $tags: [String], $country: CountryCode, $onList: Boolean,
+  $adult: Boolean, $genreNotIn: [String], $tagNotIn: [String]
+) {
+  Page(page: $page, perPage: 30) {
+    pageInfo { hasNextPage }
+    media(type: $type, sort: $sort, search: $search, season: $season, seasonYear: $seasonYear,
+          format_in: $formats, genre_in: $genres, tag_in: $tags, countryOfOrigin: $country,
+          onList: $onList, isAdult: $adult, genre_not_in: $genreNotIn, tag_not_in: $tagNotIn) {
+      ...MediaCore
+    }
+  }
+}
+
+query GenresTags {
+  GenreCollection
+  MediaTagCollection { name category isAdult }
+}
+
+query Recommendations($ids: [Int]) {
+  Page(perPage: 10) {
+    media(id_in: $ids) {
+      id
+      recommendations(perPage: 10, sort: [RATING_DESC]) {
+        nodes { mediaRecommendation { ...MediaCore } }
+      }
+    }
+  }
+}
+
+query MyReviews($userId: Int!, $page: Int!) {
+  Page(page: $page, perPage: 25) {
+    pageInfo { hasNextPage }
+    reviews(userId: $userId, sort: [UPDATED_AT_DESC]) {
+      ...ReviewFields
+      media { ...MediaCore }
+    }
+  }
+}
+
+query Notifications($page: Int!, $reset: Boolean!) {
+  Page(page: $page, perPage: 30) {
+    pageInfo { hasNextPage }
+    notifications(resetNotificationCount: $reset) {
+      __typename
+      ... on AiringNotification { id episode createdAt media { ...MediaCore } }
+      ... on RelatedMediaAdditionNotification { id createdAt media { ...MediaCore } }
+      ... on MediaDataChangeNotification { id reason createdAt media { ...MediaCore } }
+      ... on MediaMergeNotification { id reason deletedMediaTitles createdAt media { ...MediaCore } }
+      ... on MediaDeletionNotification { id reason deletedMediaTitle createdAt }
+      ... on FollowingNotification { id createdAt user { ...UserRef } }
+      ... on ActivityMessageNotification { id activityId createdAt user { ...UserRef } }
+      ... on ActivityMentionNotification { id activityId createdAt user { ...UserRef } }
+      ... on ActivityReplyNotification { id activityId createdAt user { ...UserRef } }
+      ... on ActivityReplySubscribedNotification { id activityId createdAt user { ...UserRef } }
+      ... on ActivityLikeNotification { id activityId createdAt user { ...UserRef } }
+      ... on ActivityReplyLikeNotification { id activityId createdAt user { ...UserRef } }
+      ... on ThreadCommentMentionNotification { id commentId createdAt user { ...UserRef } thread { id title } }
+      ... on ThreadCommentReplyNotification { id commentId createdAt user { ...UserRef } thread { id title } }
+      ... on ThreadCommentSubscribedNotification { id commentId createdAt user { ...UserRef } thread { id title } }
+      ... on ThreadCommentLikeNotification { id commentId createdAt user { ...UserRef } thread { id title } }
+      ... on ThreadLikeNotification { id threadId createdAt user { ...UserRef } thread { id title } }
+    }
+  }
+}
+
+query CharacterDetail($id: Int!) {
+  Character(id: $id) {
+    id
+    name { full native alternative }
+    image { large }
+    description(asHtml: false)
+    gender
+    age
+    dateOfBirth { year month day }
+    bloodType
+    favourites
+    isFavourite
+    siteUrl
+    media(perPage: 25, sort: [POPULARITY_DESC]) {
+      edges {
+        characterRole
+        voiceActors(language: JAPANESE, sort: [RELEVANCE, ID]) { id name { full } image { medium } }
+        node { ...MediaCore }
+      }
+    }
+  }
+}

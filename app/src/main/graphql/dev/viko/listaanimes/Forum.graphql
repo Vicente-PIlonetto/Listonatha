@@ -1,0 +1,41 @@
+fragment ThreadRow on Thread {
+  id title replyCount viewCount likeCount isLiked isSticky isLocked repliedAt createdAt
+  user { ...UserRef }
+  replyUser { name }
+  categories { id name }
+  mediaCategories { id title { romaji english native } coverImage { medium } }
+}
+
+query Threads($page: Int!, $categoryId: Int, $mediaCategoryId: Int, $search: String, $subscribed: Boolean, $sort: [ThreadSort]) {
+  Page(page: $page, perPage: 25) {
+    pageInfo { hasNextPage }
+    threads(categoryId: $categoryId, mediaCategoryId: $mediaCategoryId, search: $search, subscribed: $subscribed, sort: $sort) {
+      ...ThreadRow
+    }
+  }
+}
+
+query ThreadDetail($id: Int!) {
+  Thread(id: $id) {
+    ...ThreadRow
+    body(asHtml: false)
+    isSubscribed
+  }
+}
+
+query ThreadComments($threadId: Int!, $page: Int!) {
+  Page(page: $page, perPage: 25) {
+    pageInfo { hasNextPage }
+    threadComments(threadId: $threadId, sort: [ID]) {
+      id comment(asHtml: false) likeCount isLiked createdAt
+      user { id name avatar { medium } }
+      childComments
+    }
+  }
+}
+
+mutation SaveThreadComment($threadId: Int!, $parentCommentId: Int, $comment: String!) {
+  SaveThreadComment(threadId: $threadId, parentCommentId: $parentCommentId, comment: $comment) { id }
+}
+
+mutation DeleteThreadComment($id: Int!) { DeleteThreadComment(id: $id) { deleted } }

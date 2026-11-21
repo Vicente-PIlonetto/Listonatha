@@ -1,0 +1,128 @@
+fragment UserRef on User { id name avatar { medium } }
+
+fragment ActivityFields on ActivityUnion {
+  __typename
+  ... on ListActivity {
+    id status progress createdAt replyCount likeCount isLiked isSubscribed
+    user { ...UserRef }
+    media { ...MediaCore }
+  }
+  ... on TextActivity {
+    id text(asHtml: false) createdAt replyCount likeCount isLiked isSubscribed
+    user { ...UserRef }
+  }
+  ... on MessageActivity {
+    id message(asHtml: false) createdAt replyCount likeCount isLiked isPrivate
+    messenger { ...UserRef }
+    recipient { ...UserRef }
+  }
+}
+
+fragment ReplyFields on ActivityReply {
+  id text(asHtml: false) createdAt likeCount isLiked
+  user { ...UserRef }
+}
+
+query Feed($page: Int!, $following: Boolean, $global: Boolean, $userId: Int) {
+  Page(page: $page, perPage: 25) {
+    pageInfo { hasNextPage }
+    activities(isFollowing: $following, hasRepliesOrTypeText: $global, userId: $userId, sort: [ID_DESC]) {
+      ...ActivityFields
+    }
+  }
+}
+
+query ActivityThread($id: Int!) {
+  Activity(id: $id) {
+    ...ActivityFields
+    ... on ListActivity { replies { ...ReplyFields } }
+    ... on TextActivity { replies { ...ReplyFields } }
+    ... on MessageActivity { replies { ...ReplyFields } }
+  }
+}
+
+query UserProfile($id: Int, $name: String) {
+  User(id: $id, name: $name) {
+    id name about(asHtml: false) bannerImage isFollowing isFollower
+    avatar { large }
+    options { profileColor }
+    statistics {
+      anime { count meanScore minutesWatched episodesWatched }
+      manga { count meanScore chaptersRead volumesRead }
+    }
+    favourites {
+      anime(perPage: 25) { nodes { ...MediaCore } }
+      manga(perPage: 25) { nodes { ...MediaCore } }
+      characters(perPage: 25) { nodes { id name { full } image { medium } } }
+    }
+  }
+}
+
+query UserList($userId: Int!, $type: MediaType!) {
+  MediaListCollection(userId: $userId, type: $type, perChunk: 500, chunk: 1, forceSingleCompletedList: true) {
+    lists { entries { ...EntryFields media { ...MediaCore } } }
+  }
+}
+
+query Followers($userId: Int!, $page: Int!) {
+  Page(page: $page, perPage: 50) {
+    pageInfo { hasNextPage }
+    followers(userId: $userId, sort: [USERNAME]) { ...UserRef }
+  }
+}
+
+query Following($userId: Int!, $page: Int!) {
+  Page(page: $page, perPage: 50) {
+    pageInfo { hasNextPage }
+    following(userId: $userId, sort: [USERNAME]) { ...UserRef }
+  }
+}
+
+query SearchUsers($search: String!, $page: Int!) {
+  Page(page: $page, perPage: 30) {
+    pageInfo { hasNextPage }
+    users(search: $search, sort: [SEARCH_MATCH]) { ...UserRef }
+  }
+}
+
+query FollowingOnMedia($mediaId: Int!) {
+  Page(perPage: 30) {
+    mediaList(mediaId: $mediaId, isFollowing: true, sort: [UPDATED_TIME_DESC]) {
+      status score(format: POINT_100) progress
+      user { ...UserRef }
+    }
+  }
+}
+
+mutation ToggleLike($id: Int!, $type: LikeableType!) {
+  ToggleLikeV2(id: $id, type: $type) { __typename }
+}
+
+mutation ToggleFollow($userId: Int!) {
+  ToggleFollow(userId: $userId) { id isFollowing }
+}
+
+mutation SaveTextActivity($id: Int, $text: String!) {
+  SaveTextActivity(id: $id, text: $text) { id }
+}
+
+mutation DeleteActivity($id: Int!) { DeleteActivity(id: $id) { deleted } }
+
+mutation SaveActivityReply($activityId: Int!, $text: String!) {
+  SaveActivityReply(activityId: $activityId, text: $text) { ...ReplyFields }
+}
+
+mutation DeleteActivityReply($id: Int!) { DeleteActivityReply(id: $id) { deleted } }
+
+mutation UpdateProfileColor($color: String!) {
+  UpdateUser(profileColor: $color) { id options { profileColor } }
+}
+
+query FollowCounts($id: Int!) {
+  followers: Page(perPage: 1) { pageInfo { total } followers(userId: $id) { id } }
+  following: Page(perPage: 1) { pageInfo { total } following(userId: $id) { id } }
+}
+
+mutation UpdateAbout($about: String!) {
+  UpdateUser(about: $about) { id about(asHtml: false) }
+}

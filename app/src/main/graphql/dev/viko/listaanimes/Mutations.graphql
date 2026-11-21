@@ -1,0 +1,40 @@
+mutation SaveEntry(
+  $id: Int, $mediaId: Int, $status: MediaListStatus, $scoreRaw: Int, $progress: Int,
+  $progressVolumes: Int, $repeat: Int, $notes: String, $private: Boolean,
+  $startedAt: FuzzyDateInput, $completedAt: FuzzyDateInput
+) {
+  SaveMediaListEntry(
+    id: $id, mediaId: $mediaId, status: $status, scoreRaw: $scoreRaw, progress: $progress,
+    progressVolumes: $progressVolumes, repeat: $repeat, notes: $notes, private: $private,
+    startedAt: $startedAt, completedAt: $completedAt
+  ) {
+    ...EntryFields
+  }
+}
+
+mutation DeleteEntry($id: Int!) {
+  DeleteMediaListEntry(id: $id) { deleted }
+}
+
+mutation ToggleFavourite($animeId: Int, $mangaId: Int) {
+  ToggleFavourite(animeId: $animeId, mangaId: $mangaId) {
+    anime(perPage: 1) { pageInfo { total } }
+  }
+}
+
+mutation SaveReview($id: Int, $mediaId: Int!, $summary: String!, $body: String!, $score: Int!, $private: Boolean!) {
+  SaveReview(id: $id, mediaId: $mediaId, summary: $summary, body: $body, score: $score, private: $private) {
+    ...ReviewFields
+    media { ...MediaCore }
+  }
+}
+
+mutation DeleteReview($id: Int!) {
+  DeleteReview(id: $id) { deleted }
+}
+
+mutation ToggleFavouriteCharacter($id: Int!) {
+  ToggleFavourite(characterId: $id) {
+    characters(perPage: 1) { pageInfo { total } }
+  }
+}
