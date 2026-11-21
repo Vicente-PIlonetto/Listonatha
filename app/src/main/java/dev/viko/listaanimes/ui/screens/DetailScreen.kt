@@ -50,6 +50,7 @@ import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.Forum
 import androidx.compose.material.icons.outlined.RateReview
 import androidx.compose.material.icons.outlined.StarOutline
+import androidx.compose.material.icons.outlined.Share
 import dev.viko.listaanimes.ui.components.enterAnimation
 import dev.viko.listaanimes.ui.components.bounceOn
 import dev.viko.listaanimes.ui.components.pressable
@@ -301,6 +302,12 @@ private fun Header(media: Media, detail: MediaDetail?, coverKey: String, listSta
             onClick = onBack, modifier = Modifier.statusBarsPadding().padding(8.dp),
             colors = IconButtonDefaults.iconButtonColors(containerColor = p.background.copy(alpha = 0.7f)),
         ) { Icon(Icons.AutoMirrored.Filled.ArrowBack, t("Voltar")) }
+        val ctx = androidx.compose.ui.platform.LocalContext.current
+        IconButton(
+            onClick = { shareMedia(ctx, media, media.title(s.titleLanguage)) },
+            modifier = Modifier.align(Alignment.TopEnd).statusBarsPadding().padding(8.dp),
+            colors = IconButtonDefaults.iconButtonColors(containerColor = p.background.copy(alpha = 0.7f)),
+        ) { Icon(Icons.Outlined.Share, t("Compartilhar")) }
         Row(Modifier.align(Alignment.BottomStart).padding(horizontal = 20.dp, vertical = 8.dp), verticalAlignment = Alignment.Bottom) {
             Cover(media.coverLarge, 118.dp, placeholder = media.coverColor, adult = media.isAdult, sharedKey = coverKey)
             Spacer(Modifier.width(16.dp))
@@ -623,4 +630,15 @@ private fun FriendsSection(list: List<dev.viko.listaanimes.data.repo.FriendEntry
             }
         }
     }
+}
+
+/** Abre o menu de compartilhar do Android com o título e o link da obra no AniList. */
+private fun shareMedia(ctx: android.content.Context, media: Media, title: String) {
+    val path = if (media.kind == MediaKind.ANIME) "anime" else "manga"
+    val send = android.content.Intent(android.content.Intent.ACTION_SEND).apply {
+        type = "text/plain"
+        putExtra(android.content.Intent.EXTRA_SUBJECT, title)
+        putExtra(android.content.Intent.EXTRA_TEXT, "$title\nhttps://anilist.co/$path/${media.id}")
+    }
+    runCatching { ctx.startActivity(android.content.Intent.createChooser(send, t("Compartilhar"))) }
 }

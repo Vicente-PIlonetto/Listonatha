@@ -593,5 +593,13 @@
  "Nada aqui.": "Niente qui.",
  "Desenvolvido por": "Sviluppato da",
  "Perfil no AniList": "Profilo AniList",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limita le ricerche al minuto. Si riprende tra {0} s."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limita le ricerche al minuto. Si riprende tra {0} s.",
+ "Subir": "Sposta su",
+ "Descer": "Sposta giù",
+ "Voltar ao padrão": "Ripristina predefinito",
+ "Compartilhar": "Condividi",
+ "Ordem das categorias": "Ordine delle categorie",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Vale per la Home e la lista completa. L'interruttore mostra la categoria come scheda nella Home.",
+ "Perfil secreto": "Profilo segreto",
+ "Nada por aqui. Só pirulito.": "Niente qui. Solo lecca-lecca."
 }

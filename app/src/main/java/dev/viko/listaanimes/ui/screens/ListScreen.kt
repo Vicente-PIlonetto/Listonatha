@@ -166,7 +166,7 @@ fun ListScreen(nav: Nav, kind: MediaKind) {
             val filtered = ListLogic.sort(ListLogic.apply(all, filter, query, s.titleLanguage), sort, s.titleLanguage)
             LazyColumn(Modifier.fillMaxSize()) {
                 if (filtered.isEmpty()) item { EmptyState(if (all.isEmpty()) t("Lista vazia.") else t("Nada encontrado com esses filtros.")) }
-                ListStatus.displayOrder.forEach { st ->
+                s.statusOrder.forEach { st ->
                     val group = filtered.filter { it.entry.status == st }
                     if (group.isEmpty()) return@forEach
                     item(key = "h-$st") { dev.viko.listaanimes.ui.components.StatusHeader(st, kind, group.size) }
@@ -209,7 +209,7 @@ fun ListScreen(nav: Nav, kind: MediaKind) {
             dragHandle = null,
         ) {
             Column(Modifier.fillMaxWidth().verticalScroll(rememberScrollState()).navigationBarsPadding().padding(20.dp)) {
-                FilterGroup(t("Status"), ListStatus.displayOrder.map { it to it.label(kind) }, filter.statuses, icon = { it.icon(kind) }) { st ->
+                FilterGroup(t("Status"), s.statusOrder.map { it to it.label(kind) }, filter.statuses, icon = { it.icon(kind) }) { st ->
                     vm.filter.value = filter.copy(statuses = filter.statuses.toggle(st))
                 }
                 val formats = all.mapNotNull { it.media?.format }.distinct().sorted()

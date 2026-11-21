@@ -156,11 +156,13 @@ fun HomeScreen(nav: Nav) {
 
 @Composable
 private fun HomeList(nav: Nav, vm: HomeViewModel, kind: MediaKind, list: List<EntryWithMedia>?, s: dev.viko.listaanimes.data.settings.Settings) {
-    // Abas por status: Vendo, Quero ver, Revendo, Pausado (a escolha fica salva por tipo).
-    val tabs = remember { listOf(ListStatus.CURRENT, ListStatus.PLANNING, ListStatus.REPEATING, ListStatus.PAUSED) }
-    var selected by androidx.compose.runtime.saveable.rememberSaveable(kind) { androidx.compose.runtime.mutableStateOf(ListStatus.CURRENT) }
+    // Abas por status, na ordem escolhida nas Configurações (Listas e títulos).
+    val tabs = s.homeTabs
+    var chosen by androidx.compose.runtime.saveable.rememberSaveable(kind) { androidx.compose.runtime.mutableStateOf<ListStatus?>(null) }
+    // Sem escolha (ou se a aba escolhida foi tirada), abre na primeira da ordem.
+    val selected = chosen?.takeIf { it in tabs } ?: tabs.first()
     // Agrupar e ordenar só quando a lista muda (não a cada recomposição).
-    val groupedMemo = remember(list) {
+    val groupedMemo = remember(list, tabs) {
         val now = nowEpoch()
         list?.let { l ->
             tabs.associateWith { st ->
@@ -187,7 +189,7 @@ private fun HomeList(nav: Nav, vm: HomeViewModel, kind: MediaKind, list: List<En
             ) {
                 items(tabs.size) { i ->
                     val st = tabs[i]
-                    StatusTab(st, kind, grouped[st].orEmpty().size, st == selected) { selected = st }
+                    StatusTab(st, kind, grouped[st].orEmpty().size, st == selected) { chosen = st }
                 }
             }
         }

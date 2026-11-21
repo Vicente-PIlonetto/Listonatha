@@ -11,6 +11,7 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.core.stringSetPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import dev.viko.listaanimes.domain.ListStatus
 import dev.viko.listaanimes.domain.TitleLanguage
 import dev.viko.listaanimes.domain.score.ScoreSystem
 import kotlinx.coroutines.flow.Flow
@@ -69,7 +70,24 @@ data class Settings(
     val notifyDataChange: Boolean = false,
     val scheduleShowAll: Boolean = false,
     val homeCollapsed: Set<String> = emptySet(),
-)
+    /** Ordem das categorias (status), no Início e na lista completa. Sempre com as seis. */
+    val statusOrder: List<ListStatus> = DEFAULT_STATUS_ORDER,
+    /** Categorias que não viram aba no Início (na lista completa aparecem todas). */
+    val homeHidden: Set<ListStatus> = DEFAULT_HOME_HIDDEN,
+) {
+    /** Abas do Início: a ordem escolhida sem as escondidas (pelo menos uma). */
+    val homeTabs: List<ListStatus> get() = statusOrder.filter { it !in homeHidden }.ifEmpty { statusOrder.take(1) }
+}
+
+val DEFAULT_STATUS_ORDER = listOf(ListStatus.CURRENT, ListStatus.PLANNING, ListStatus.REPEATING, ListStatus.PAUSED, ListStatus.COMPLETED, ListStatus.DROPPED)
+val DEFAULT_HOME_HIDDEN = setOf(ListStatus.COMPLETED, ListStatus.DROPPED)
+
+/** Lê a ordem salva; status que faltarem (ou inválidos) entram no fim, na ordem padrão. */
+fun normalizeStatusOrder(order: List<ListStatus>): List<ListStatus> =
+    (order.distinct() + DEFAULT_STATUS_ORDER).distinct()
+
+private fun parseStatusOrder(raw: String?): List<ListStatus> =
+    normalizeStatusOrder(raw?.split(',')?.mapNotNull { ListStatus.parse(it) }.orEmpty())
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("settings")
 
@@ -100,6 +118,8 @@ class SettingsRepository(private val context: Context) {
         val nData = booleanPreferencesKey("notify_data_change")
         val scheduleAll = booleanPreferencesKey("schedule_show_all")
         val collapsed = stringSetPreferencesKey("home_collapsed")
+        val statusOrder = stringPreferencesKey("status_order")
+        val homeHidden = stringSetPreferencesKey("home_hidden")
         val viewerId = intPreferencesKey("viewer_id")
         val lastSync = longPreferencesKey("last_sync")
         val notifSeen = longPreferencesKey("notifications_seen_at")
@@ -135,6 +155,8 @@ class SettingsRepository(private val context: Context) {
             notifyDataChange = p[K.nData] ?: false,
             scheduleShowAll = p[K.scheduleAll] ?: false,
             homeCollapsed = p[K.collapsed] ?: emptySet(),
+            statusOrder = parseStatusOrder(p[K.statusOrder]),
+            homeHidden = p[K.homeHidden]?.mapNotNull { ListStatus.parse(it) }?.toSet() ?: DEFAULT_HOME_HIDDEN,
         )
     }
 
@@ -189,6 +211,9 @@ class SettingsRepository(private val context: Context) {
     suspend fun setNotifyRelated(v: Boolean) = context.dataStore.edit { it[K.nRelated] = v }
     suspend fun setNotifyDataChange(v: Boolean) = context.dataStore.edit { it[K.nData] = v }
     suspend fun setScheduleShowAll(v: Boolean) = context.dataStore.edit { it[K.scheduleAll] = v }
+    suspend fun setStatusOrder(v: List<ListStatus>) = context.dataStore.edit { it[K.statusOrder] = normalizeStatusOrder(v).joinToString(",") { s -> s.name } }
+    suspend fun setHomeHidden(v: Set<ListStatus>) = context.dataStore.edit { it[K.homeHidden] = v.map { s -> s.name }.toSet() }
+    suspend fun resetStatusOrder() = context.dataStore.edit { it.remove(K.statusOrder); it.remove(K.homeHidden) }
     suspend fun toggleCollapsed(key: String) = context.dataStore.edit {
         val cur = it[K.collapsed] ?: emptySet()
         it[K.collapsed] = if (key in cur) cur - key else cur + key
@@ -229,5 +254,7 @@ class SettingsRepository(private val context: Context) {
         it[K.nData] = s.notifyDataChange
         it[K.scheduleAll] = s.scheduleShowAll
         it[K.collapsed] = s.homeCollapsed
+        it[K.statusOrder] = normalizeStatusOrder(s.statusOrder).joinToString(",") { st -> st.name }
+        it[K.homeHidden] = s.homeHidden.map { st -> st.name }.toSet()
     }
 }

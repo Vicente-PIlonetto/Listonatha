@@ -593,5 +593,13 @@
  "Nada aqui.": "这里没有内容。",
  "Desenvolvido por": "开发者",
  "Perfil no AniList": "AniList 主页",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList 限制每分钟的搜索次数。{0} 秒后继续。"
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList 限制每分钟的搜索次数。{0} 秒后继续。",
+ "Subir": "上移",
+ "Descer": "下移",
+ "Voltar ao padrão": "恢复默认",
+ "Compartilhar": "分享",
+ "Ordem das categorias": "分类顺序",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "适用于首页和完整列表。开关决定该分类是否在首页显示为标签。",
+ "Perfil secreto": "秘密主页",
+ "Nada por aqui. Só pirulito.": "这里什么都没有，只有棒棒糖。"
 }

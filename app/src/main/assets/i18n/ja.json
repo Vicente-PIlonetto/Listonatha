@@ -593,5 +593,13 @@
  "Nada aqui.": "ここには何もありません。",
  "Desenvolvido por": "開発者",
  "Perfil no AniList": "AniListのプロフィール",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniListは1分あたりの検索数を制限しています。{0}秒後に再開します。"
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniListは1分あたりの検索数を制限しています。{0}秒後に再開します。",
+ "Subir": "上へ",
+ "Descer": "下へ",
+ "Voltar ao padrão": "初期設定に戻す",
+ "Compartilhar": "共有",
+ "Ordem das categorias": "カテゴリーの順番",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "ホームと全リストに反映されます。スイッチでホームにタブとして表示します。",
+ "Perfil secreto": "ひみつのプロフィール",
+ "Nada por aqui. Só pirulito.": "なにもないよ。キャンディだけ。"
 }
