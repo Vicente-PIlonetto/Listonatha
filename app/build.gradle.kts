@@ -23,8 +23,8 @@ android {
         applicationId = "dev.viko.listaanimes"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "1.0"
+        versionCode = 2
+        versionName = "1.0.1"
         resourceConfigurations += listOf("pt-rBR", "pt")
         buildConfigField("String", "ANILIST_CLIENT_ID", "\"$anilistClientId\"")
         // Links opcionais da página Sobre (local.properties): repositório e apoio ao projeto.
