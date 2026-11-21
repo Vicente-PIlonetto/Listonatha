@@ -601,5 +601,8 @@
  "Ordem das categorias": "カテゴリーの順番",
  "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "ホームと全リストに反映されます。スイッチでホームにタブとして表示します。",
  "Perfil secreto": "ひみつのプロフィール",
- "Nada por aqui. Só pirulito.": "なにもないよ。キャンディだけ。"
+ "Nada por aqui. Só pirulito.": "なにもないよ。キャンディだけ。",
+ "Ler em": "読むアプリ",
+ "Assistir em": "見るアプリ",
+ "Busca por \"{0}\"": "「{0}」で検索"
 }

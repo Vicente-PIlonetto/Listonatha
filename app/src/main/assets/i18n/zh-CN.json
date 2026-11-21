@@ -601,5 +601,8 @@
  "Ordem das categorias": "分类顺序",
  "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "适用于首页和完整列表。开关决定该分类是否在首页显示为标签。",
  "Perfil secreto": "秘密主页",
- "Nada por aqui. Só pirulito.": "这里什么都没有，只有棒棒糖。"
+ "Nada por aqui. Só pirulito.": "这里什么都没有，只有棒棒糖。",
+ "Ler em": "阅读应用",
+ "Assistir em": "观看应用",
+ "Busca por \"{0}\"": "搜索“{0}”"
 }
