@@ -1,0 +1,5 @@
+-keepattributes *Annotation*, InnerClasses, Signature
+-keep,includedescriptorclasses class dev.viko.listaanimes.**$$serializer { *; }
+-keepclassmembers class dev.viko.listaanimes.** { *** Companion; }
+-keepclasseswithmembers class dev.viko.listaanimes.** { kotlinx.serialization.KSerializer serializer(...); }
+-dontwarn org.slf4j.**
