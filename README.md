@@ -1,118 +1,129 @@
 <div align="center">
 
-<img src="docs/img/icon.png" width="104" alt="Ícone do Listonatha" />
+<img src="docs/img/banner.svg" alt="Listonatha" width="100%" />
 
-# Listonatha
+<h1>Listonatha</h1>
 
-**Sua lista de animes e mangás do AniList, no bolso.**
-Marque episódios, dê notas do seu jeito, veja o que sai hoje e acompanhe seus amigos.
+<p><b>Sua lista de animes e mangás do AniList, no bolso.</b><br/>
+Marque episódios num toque, dê notas do seu jeito, saiba o que sai hoje e acompanhe seus amigos.</p>
 
-<a href="https://github.com/Vicente-PIlonetto/Listonatha/releases/latest"><img src="https://img.shields.io/github/v/release/Vicente-PIlonetto/Listonatha?label=baixar&style=for-the-badge&color=d98a66" alt="Baixar" /></a>
-<img src="https://img.shields.io/badge/Android-8%2B-1b1a18?style=for-the-badge&logo=android&logoColor=d98a66" alt="Android 8 ou mais novo" />
-<img src="https://img.shields.io/badge/AniList-conta%20gr%C3%A1tis-1b1a18?style=for-the-badge&logo=anilist&logoColor=3db4f2" alt="Conta do AniList" />
+<a href="https://github.com/Vicente-PIlonetto/Listonatha/releases/latest"><img src="https://img.shields.io/github/v/release/Vicente-PIlonetto/Listonatha?label=baixar&style=for-the-badge&color=d98a66&labelColor=1b1a18" alt="Baixar a versão mais recente" /></a>
+<img src="https://img.shields.io/badge/Android-8%2B-d98a66?style=for-the-badge&labelColor=1b1a18" alt="Android 8 ou mais novo" />
+<img src="https://img.shields.io/badge/licen%C3%A7a-GPL--3.0-d98a66?style=for-the-badge&labelColor=1b1a18" alt="Licença GPL-3.0" />
 
 </div>
+
+<br/>
 
 <p align="center">
   <img src="docs/img/inicio.png" width="23%" alt="Início" />
   <img src="docs/img/detalhe.png" width="23%" alt="Página de um anime" />
-  <img src="docs/img/agenda.png" width="23%" alt="Agenda" />
+  <img src="docs/img/agenda.png" width="23%" alt="Agenda da semana" />
   <img src="docs/img/voce.png" width="23%" alt="Seu perfil" />
 </p>
 
----
+## Por que o Listonatha
 
-## ✦ O que ele faz
+O AniList é ótimo para organizar o que você assiste e lê, mas no celular o dia a dia pede algo mais rápido. O Listonatha foi feito para isso: abrir, marcar o episódio que acabou de ver e voltar para a vida. Tudo que você faz aparece igual no site, e o que você muda no site aparece no app.
+
+## O que ele faz
 
 <table>
 <tr>
-<td width="50%" valign="top">
-
-### 📺 Acompanhe sem esforço
-Um toque no **+1** e o episódio está marcado. O Início separa o que você está **vendo**, **quer ver** e **revendo**, e mostra quando tem episódio novo esperando.
-
-</td>
-<td width="50%" valign="top">
-
-### ⭐ Notas do seu jeito
-Letras, estrelas, carinhas ou de 0 a 100. E as notas especiais, de **S** até **SSS+++**, para aquele anime que merece mais que nota máxima.
-
-</td>
+<td width="80" align="center"><img src="docs/img/icons/acompanhar.svg" width="56" alt="" /></td>
+<td><b>Acompanhe sem esforço</b><br/>
+Um toque no +1 e o episódio ou capítulo está marcado. O Início separa o que você está <i>vendo</i>, <i>quer ver</i>, <i>revendo</i> e <i>pausou</i>, e destaca quando há episódio novo esperando por você. Segurando o dedo numa capa, você muda o status ou dá nota sem abrir nada.</td>
 </tr>
 <tr>
-<td valign="top">
-
-### 📅 Nunca perca um episódio
-A **Agenda** mostra o que sai na semana e no mês, com a capa de cada dia. Se quiser, o app avisa quando sair episódio novo do que você está vendo.
-
-</td>
-<td valign="top">
-
-### 🧭 Ache o próximo favorito
-Em alta, temporada atual e próxima, recomendações a partir das suas melhores notas, filtros por gênero e um botão de **sortear** para quando bater a dúvida.
-
-</td>
+<td align="center"><img src="docs/img/icons/notas.svg" width="56" alt="" /></td>
+<td><b>Notas do seu jeito</b><br/>
+Letras (de F a A++), 5 estrelas, carinhas, de 0 a 10 ou de 0 a 100. E as notas especiais, de S até SSS+++, para aquela obra que merece mais que a nota máxima. Dá para mostrar duas escalas ao mesmo tempo.</td>
 </tr>
 <tr>
-<td valign="top">
-
-### 💬 Junto com os amigos
-Veja o que seus amigos estão assistindo, curta, responda, poste e participe do **fórum** do AniList, sem sair do app.
-
-</td>
-<td valign="top">
-
-### 🎨 Do seu jeito
-Tema claro, escuro ou preto, cor de destaque, ícone que combina, banner, cores especiais e **fundos animados** no perfil.
-
-</td>
+<td align="center"><img src="docs/img/icons/agenda.svg" width="56" alt="" /></td>
+<td><b>Nunca perca um episódio</b><br/>
+A Agenda mostra o que sai na semana, dia a dia, e o calendário do mês inteiro, com a capa de cada dia. Você escolhe ver só a sua lista ou tudo que está em lançamento, e pode receber um aviso quando sair episódio novo.</td>
 </tr>
 <tr>
-<td valign="top">
-
-### 📶 Funciona sem internet
-Marcou um episódio no metrô? Fica salvo e vai para o AniList assim que a conexão voltar, na ordem certa.
-
-</td>
-<td valign="top">
-
-### 🌎 Em 9 idiomas
-Português, inglês, espanhol, francês, alemão, italiano, russo, japonês e chinês. Sinopses e fichas de personagens podem ser traduzidas no próprio celular.
-
-</td>
+<td align="center"><img src="docs/img/icons/descobrir.svg" width="56" alt="" /></td>
+<td><b>Ache o próximo favorito</b><br/>
+Em alta, temporada atual e a próxima, recomendações a partir das suas melhores notas, filtros por gênero e por nichos como isekai e iyashikei, e um botão de sortear para quando bater a dúvida. Cada obra mostra onde assistir e abre direto no app do serviço.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/social.svg" width="56" alt="" /></td>
+<td><b>Junto com os amigos</b><br/>
+Veja o que seus amigos estão vendo, curta, responda e publique. O fórum do AniList está no app, por categoria se você preferir, e cada obra mostra quem você segue que também está nela.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/personalizar.svg" width="56" alt="" /></td>
+<td><b>Do seu jeito</b><br/>
+Tema claro, escuro ou preto, cor de destaque e um ícone que combina. No perfil: banner, cores especiais, fundos animados, bio e seus personagens favoritos.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/offline.svg" width="56" alt="" /></td>
+<td><b>Funciona sem internet</b><br/>
+Marcou um episódio no metrô? Fica salvo no celular e vai para o AniList assim que a conexão voltar, na ordem em que você fez.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/idiomas.svg" width="56" alt="" /></td>
+<td><b>Em 9 idiomas</b><br/>
+Português, inglês, espanhol, francês, alemão, italiano, russo, japonês e chinês. Sinopses e fichas de personagens podem ser traduzidas no próprio celular, sem mandar o texto para fora.</td>
 </tr>
 </table>
 
 <p align="center">
   <img src="docs/img/descobrir.png" width="23%" alt="Descobrir" />
   <img src="docs/img/social.png" width="23%" alt="Social" />
-  <img src="docs/img/calendario.png" width="23%" alt="Calendário" />
+  <img src="docs/img/calendario.png" width="23%" alt="Calendário do mês" />
   <img src="docs/img/configuracoes.png" width="23%" alt="Configurações" />
 </p>
 
----
-
-## ⬇️ Como instalar
+## Como instalar
 
 1. Baixe o arquivo **Listonatha.apk** na [página de versões](https://github.com/Vicente-PIlonetto/Listonatha/releases/latest).
-2. Abra o arquivo no celular. Se o Android pedir, permita **instalar apps desconhecidos**.
+2. Abra o arquivo no celular. Se o Android pedir, permita **instalar apps desconhecidos** para o navegador ou para o app de arquivos.
 3. Abra o Listonatha e toque em **Entrar com AniList**.
 
-Para atualizar, é só instalar a versão nova por cima: nada se perde.
+Para atualizar, baixe a versão nova e instale por cima. Sua lista, notas e configurações continuam lá.
 
-## 🙋 Perguntas rápidas
+## Primeiros passos
 
-**Preciso de conta?** Sim, uma conta do [AniList](https://anilist.co), que é gratuita. Sua lista fica lá e aparece igual no site.
+- **Escolha seu sistema de notas** em *Configurações > Sistemas de nota*. Se você usa letras, as notas especiais aparecem no seletor.
+- **Ligue os avisos** em *Configurações > Notificações* para saber quando sai episódio do que você está vendo.
+- **Marque seus serviços de streaming** para eles aparecerem primeiro em "Onde assistir".
+- **Deixe com a sua cara** em *Você > Personalizar*.
 
-**Minha senha passa pelo app?** Não. O login acontece na página do próprio AniList.
+## Perguntas frequentes
 
-**Posso usar mais de uma conta?** Pode. Em *Configurações > Contas* dá para trocar entre elas.
+**Preciso de conta?**
+Sim, uma conta do [AniList](https://anilist.co), que é gratuita. Sua lista fica lá.
 
-**Tem conteúdo adulto?** Fica escondido por padrão. Se você ativar, as capas aparecem desfocadas até você decidir o contrário.
+**Minha senha passa pelo app?**
+Não. O login acontece na página do próprio AniList, e o app recebe só uma autorização guardada de forma cifrada no celular.
 
----
+**Posso usar mais de uma conta?**
+Pode. Em *Configurações > Contas* você troca entre elas.
+
+**E conteúdo adulto?**
+Fica escondido por padrão. Se você ativar, as capas aparecem desfocadas até você desligar essa opção.
+
+**Por que não está na Play Store?**
+É um projeto pessoal e gratuito. A instalação é pelo arquivo, como descrito acima.
+
+## Privacidade
+
+O Listonatha conversa só com o AniList. Não há anúncios, contas próprias nem coleta de dados. As imagens que você escolhe da galeria para o perfil e as notas especiais ficam apenas no seu celular, e podem ser salvas num backup em *Configurações > Backup*.
+
+## Encontrou um problema ou tem uma ideia?
+
+Abra uma [issue](https://github.com/Vicente-PIlonetto/Listonatha/issues/new/choose): há modelos para relatar um erro ou sugerir uma ideia. Quer ajudar com código ou tradução? Veja o [guia de contribuição](CONTRIBUTING.md).
+
+## Licença
+
+Distribuído sob a [GNU GPL 3.0](LICENSE). Você pode usar, estudar, modificar e compartilhar; versões modificadas que forem distribuídas também precisam ter o código aberto.
 
 <div align="center">
+<br/>
 <sub>Dados do <a href="https://anilist.co">AniList</a>. O Listonatha não é afiliado ao AniList.<br/>
-Quer compilar ou contribuir? Veja o <a href="docs/DESENVOLVIMENTO.md">guia de desenvolvimento</a>.</sub>
+Fontes IBM Plex Sans e IBM Plex Mono, sob a SIL Open Font License.</sub>
 </div>
