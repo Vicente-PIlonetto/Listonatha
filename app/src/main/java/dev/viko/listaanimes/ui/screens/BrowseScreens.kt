@@ -138,6 +138,7 @@ private fun PagedList(vm: PagedBrowseViewModel, nav: Nav, hideOnList: Boolean = 
     val shown = if (hideOnList) items.filter { it.id !in onList } else items
     LazyColumn(Modifier.fillMaxSize(), state = state) {
         item { header() }
+        item { RateLimitNotice() }
         error?.let { item { MessageBar(it) } }
         if (grid) {
             items(shown.chunked(3), key = { "g-${it.first().id}" }) { row ->
@@ -265,11 +266,11 @@ fun GenreTagScreen(nav: Nav, initialKind: MediaKind, initialGenre: String? = nul
     val genres by gvm.genres.collectAsStateWithLifecycle()
     val tags by gvm.tags.collectAsStateWithLifecycle()
     val error by gvm.error.collectAsStateWithLifecycle()
-    var kind by remember { mutableStateOf(initialKind) }
-    var selG by remember { mutableStateOf(setOfNotNull(initialGenre)) }
-    var selT by remember { mutableStateOf(setOfNotNull(initialTag)) }
-    var tagQuery by remember { mutableStateOf("") }
-    var showTags by remember { mutableStateOf(false) }
+    var kind by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(initialKind) }
+    var selG by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(setOfNotNull(initialGenre)) }
+    var selT by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(setOfNotNull(initialTag)) }
+    var tagQuery by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf("") }
+    var showTags by androidx.compose.runtime.saveable.rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(kind, selG, selT) {
         if (selG.isNotEmpty() || selT.isNotEmpty()) vm.load(BrowseParams(kind, listOf("POPULARITY_DESC"), genres = selG.toList(), tags = selT.toList()), 400)
     }
@@ -377,4 +378,17 @@ fun RandomButton(kind: MediaKind, genres: List<String>, tags: List<String>, nav:
         Icon(androidx.compose.material.icons.Icons.Outlined.Casino, t("Sortear"), tint = AppTheme.palette.accent,
             modifier = Modifier.graphicsLayer { rotationZ = spin })
     }
+}
+
+/** Aviso enquanto o app espera o AniList liberar novas buscas (limite por minuto). */
+@Composable
+fun RateLimitNotice() {
+    val c = dev.viko.listaanimes.ui.nav.LocalContainer.current
+    val until by c.api.rateLimit.waitingUntil.collectAsStateWithLifecycle()
+    val end = until ?: return
+    var left by remember(end) { mutableStateOf(((end - System.currentTimeMillis()) / 1000).coerceAtLeast(1)) }
+    LaunchedEffect(end) {
+        while (left > 0) { delay(1000); left = ((end - System.currentTimeMillis()) / 1000).coerceAtLeast(0) }
+    }
+    MessageBar(t("O AniList limita as buscas por minuto. Continuando em {0} s.", left))
 }

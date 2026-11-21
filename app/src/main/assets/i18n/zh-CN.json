@@ -591,5 +591,7 @@
  "editar": "编辑",
  "Mostrar no perfil": "在个人资料中显示",
  "Nada aqui.": "这里没有内容。",
- "Desenvolvido por": "开发者"
+ "Desenvolvido por": "开发者",
+ "Perfil no AniList": "AniList 主页",
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList 限制每分钟的搜索次数。{0} 秒后继续。"
 }

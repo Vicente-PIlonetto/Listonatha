@@ -591,5 +591,7 @@
  "editar": "изменить",
  "Mostrar no perfil": "Показывать в профиле",
  "Nada aqui.": "Здесь пусто.",
- "Desenvolvido por": "Разработчик"
+ "Desenvolvido por": "Разработчик",
+ "Perfil no AniList": "Профиль на AniList",
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList ограничивает число запросов в минуту. Продолжим через {0} с."
 }
