@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.Logout
 import androidx.compose.material.icons.automirrored.outlined.OpenInNew
+import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Close
 import androidx.compose.material.icons.outlined.Code
 import androidx.compose.material.icons.outlined.Favorite
@@ -194,6 +195,7 @@ private fun ToggleRow(text: String, sub: String?, checked: Boolean, onChange: (B
 
 private const val DEV_NAME = "Vicente Pilonetto"
 private const val DEV_URL = "https://github.com/Vicente-PIlonetto"
+private const val DEV_ANILIST = "VyKTorCorher"
 
 private data class Lib(val name: String, val license: String, val url: String)
 
@@ -246,6 +248,10 @@ fun AboutSection() {
                 Text("github.com/Vicente-PIlonetto", style = MaterialTheme.typography.bodySmall, color = p.textSecondary)
             }
             Icon(Icons.AutoMirrored.Outlined.OpenInNew, null, tint = p.textTertiary, modifier = Modifier.size(18.dp))
+        }
+        // Perfil no AniList: abre dentro do próprio app.
+        LinkRow(t("Perfil no AniList"), detail = DEV_ANILIST, icon = Icons.Outlined.AccountCircle, iconColor = Color(0xFF3DB4F2)) {
+            runCatching { uri.openUri("https://anilist.co/user/$DEV_ANILIST") }
         }
     }
     Group(null) {

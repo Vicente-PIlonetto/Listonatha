@@ -13,6 +13,9 @@ class RateLimitState(private val nowMs: () -> Long = System::currentTimeMillis) 
     @Volatile var blockedUntilMs: Long = 0; private set
     @Volatile var limit: Int? = null; private set
 
+    /** Até quando o app está parado esperando o limite (para a tela avisar). null = não está esperando. */
+    val waitingUntil = kotlinx.coroutines.flow.MutableStateFlow<Long?>(null)
+
     @Synchronized
     fun update(remainingHeader: String?, resetHeader: String?, retryAfterHeader: String?, code: Int, limitHeader: String? = null) {
         limitHeader?.toIntOrNull()?.let { limit = it }
@@ -59,7 +62,8 @@ class RateLimitInterceptor(
         while (true) {
             val wait = state.waitMs()
             if (wait > 0) {
-                sleep(wait)
+                state.waitingUntil.value = System.currentTimeMillis() + wait
+                try { sleep(wait) } finally { state.waitingUntil.value = null }
                 state.afterWait()
             }
             val response = chain.proceed(chain.request())

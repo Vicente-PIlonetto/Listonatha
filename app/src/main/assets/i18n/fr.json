@@ -591,5 +591,7 @@
  "editar": "modifier",
  "Mostrar no perfil": "Afficher sur le profil",
  "Nada aqui.": "Rien ici.",
- "Desenvolvido por": "Développé par"
+ "Desenvolvido por": "Développé par",
+ "Perfil no AniList": "Profil AniList",
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limite les recherches par minute. Reprise dans {0} s."
 }

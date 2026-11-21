@@ -591,5 +591,7 @@
  "editar": "bearbeiten",
  "Mostrar no perfil": "Im Profil anzeigen",
  "Nada aqui.": "Nichts hier.",
- "Desenvolvido por": "Entwickelt von"
+ "Desenvolvido por": "Entwickelt von",
+ "Perfil no AniList": "AniList-Profil",
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList begrenzt Suchen pro Minute. Weiter in {0} s."
 }

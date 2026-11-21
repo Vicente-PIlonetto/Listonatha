@@ -591,5 +591,7 @@
  "editar": "編集",
  "Mostrar no perfil": "プロフィールに表示",
  "Nada aqui.": "ここには何もありません。",
- "Desenvolvido por": "開発者"
+ "Desenvolvido por": "開発者",
+ "Perfil no AniList": "AniListのプロフィール",
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniListは1分あたりの検索数を制限しています。{0}秒後に再開します。"
 }

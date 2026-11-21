@@ -210,7 +210,21 @@ class MediaRepository(
 
     fun mangaDiscoverKey(country: String?, formats: List<String>) = "manga:${country ?: "all"}:${formats.sorted().joinToString(",")}"
 
+    // Páginas de busca recentes: voltar a um filtro já visto é instantâneo e não gasta o limite do AniList.
+    private val browseCache = object : java.util.LinkedHashMap<String, Pair<Long, BrowsePage>>(64, 0.75f, true) {
+        override fun removeEldestEntry(eldest: MutableMap.MutableEntry<String, Pair<Long, BrowsePage>>?) = size > 60
+    }
+
     suspend fun browse(p: BrowseParams, page: Int): BrowsePage {
+        val st = settings.current()
+        val key = "$p|$page|${st.showAdult}|${st.blockedGenres}|${st.blockedTags}"
+        synchronized(browseCache) { browseCache[key] }?.let { (at, cached) -> if (now() - at < 600) return cached }
+        val fresh = browseRemote(p, page)
+        synchronized(browseCache) { browseCache[key] = now() to fresh }
+        return fresh
+    }
+
+    private suspend fun browseRemote(p: BrowseParams, page: Int): BrowsePage {
         val f = contentFilter()
         val d = api.run(api.apollo.query(BrowseQuery(
             adult = f.adult, genreNotIn = f.genreNotIn, tagNotIn = f.tagNotIn,
