@@ -377,7 +377,8 @@ class ProfileViewModel(private val c: AppContainer, private val userId: Int?, pr
     val follows = MutableStateFlow<Pair<Int, Int>?>(null)
 
     /** Perfil secreto (easter egg): montado no app, nada de follow, feed ou lista no AniList. */
-    val secret = userId == dev.viko.listaanimes.data.repo.SecretProfile.ID || (userId == null && dev.viko.listaanimes.data.repo.SecretProfile.matches(name))
+    // Abre pelo nome: a rota de perfil ignora ids <= 0.
+    val secret = userId == dev.viko.listaanimes.data.repo.SecretProfile.ID || dev.viko.listaanimes.data.repo.SecretProfile.matches(name)
 
     init { load() }
 
@@ -586,7 +587,7 @@ fun UserSearchScreen(nav: Nav) {
         OutlinedTextField(q, { q = it }, singleLine = true, placeholder = { Text(t("Nome de usuário")) },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), shape = RoundedCornerShape(4.dp))
         if (dev.viko.listaanimes.data.repo.SecretProfile.matches(applied)) {
-            UserRow(dev.viko.listaanimes.data.repo.SecretProfile.ref) { nav.profile(dev.viko.listaanimes.data.repo.SecretProfile.ID) }
+            UserRow(dev.viko.listaanimes.data.repo.SecretProfile.ref) { nav.profileByName(dev.viko.listaanimes.data.repo.SecretProfile.NAME) }
             ThinDivider()
         }
         if (applied.length < 2) EmptyState(t("Digite pelo menos duas letras."))
