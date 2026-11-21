@@ -192,6 +192,9 @@ private fun ToggleRow(text: String, sub: String?, checked: Boolean, onChange: (B
 
 // ---------------- Sobre ----------------
 
+private const val DEV_NAME = "Vicente Pilonetto"
+private const val DEV_URL = "https://github.com/Vicente-PIlonetto"
+
 private data class Lib(val name: String, val license: String, val url: String)
 
 private val LIBS = listOf(
@@ -230,6 +233,20 @@ fun AboutSection() {
             t("Compilado em {0}", DateFormat.getDateTimeInstance(DateFormat.MEDIUM, DateFormat.SHORT, dev.viko.listaanimes.i18n.I18n.locale).format(Date(BuildConfig.BUILD_TIME))),
             style = Mono.style(12), color = p.textTertiary,
         )
+    }
+    Group(t("Desenvolvido por")) {
+        Row(
+            Modifier.fillMaxWidth().clickable { runCatching { uri.openUri(DEV_URL) } }.padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Avatar("$DEV_URL.png?size=160", 44.dp, Modifier.clip(CircleShape))
+            Spacer(Modifier.width(14.dp))
+            Column(Modifier.weight(1f)) {
+                Text(DEV_NAME, style = MaterialTheme.typography.titleMedium)
+                Text("github.com/Vicente-PIlonetto", style = MaterialTheme.typography.bodySmall, color = p.textSecondary)
+            }
+            Icon(Icons.AutoMirrored.Outlined.OpenInNew, null, tint = p.textTertiary, modifier = Modifier.size(18.dp))
+        }
     }
     Group(null) {
         if (BuildConfig.REPO_URL.isNotBlank()) LinkRow(t("Código-fonte"), icon = Icons.Outlined.Code) { runCatching { uri.openUri(BuildConfig.REPO_URL) } }
