@@ -234,7 +234,9 @@ private fun FacesRow(items: List<Triple<Int, String, Int>>, selectedLevel: Int?,
                 Modifier.clip(RoundedCornerShape(4.dp)).clickable { onPick(raw) }.padding(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                FaceIcon(level, if (sel) p.accent else p.textSecondary, if (items.size > 3) 36.dp else 48.dp, label = label)
+                // Cada carinha na sua cor; as não escolhidas ficam apagadas.
+                val col = faceColor(level, threeFaces = items.size == 3)
+                FaceIcon(level, if (sel || selectedLevel == null) col else col.copy(alpha = 0.4f), if (items.size > 3) 36.dp else 48.dp, label = label)
                 Spacer(Modifier.height(4.dp))
                 Text(label, style = MaterialTheme.typography.labelSmall, color = if (sel) p.text else p.textTertiary, textAlign = TextAlign.Center, modifier = Modifier.width(if (items.size > 3) 44.dp else 72.dp))
             }
