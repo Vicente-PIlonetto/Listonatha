@@ -97,6 +97,35 @@ class SocialRepository(private val api: AniListApi) {
         )
     }
 
+    /** Números da tela Estatísticas (o gráfico de notas sai da lista, no sistema de nota do app). */
+    suspend fun stats(userId: Int): UserStats {
+        val u = api.run(api.apollo.query(dev.viko.listaanimes.graphql.UserStatsQuery(userId))).User ?: error(t("Usuário não encontrado"))
+        // "7-16" -> 7, "101+" -> 101, "1" -> 1; faixa sem tamanho conhecido fica de fora.
+        fun order(l: String) = l.takeWhile { it.isDigit() }.toIntOrNull() ?: Int.MAX_VALUE
+        fun status(s: String?) = ListStatus.parse(s)
+        val a = u.statistics?.anime
+        val m = u.statistics?.manga
+        val anime = KindStats(
+            count = a?.count ?: 0, meanScore = a?.meanScore ?: 0.0, standardDeviation = a?.standardDeviation ?: 0.0,
+            progress = a?.minutesWatched ?: 0, secondary = a?.episodesWatched ?: 0,
+            planned = a?.statuses.orEmpty().firstOrNull { it?.status?.rawValue == "PLANNING" }?.minutesWatched ?: 0,
+            lengths = a?.lengths.orEmpty().mapNotNull { l -> l?.length?.let { it to l.count } }.sortedBy { order(it.first) },
+            formats = a?.formats.orEmpty().mapNotNull { f -> f?.format?.rawValue?.let { it to f.count } },
+            statuses = a?.statuses.orEmpty().mapNotNull { x -> status(x?.status?.rawValue)?.let { it to x!!.count } },
+            genres = a?.genres.orEmpty().mapNotNull { g -> g?.genre?.let { Triple(it, g.count, g.meanScore) } },
+        )
+        val manga = KindStats(
+            count = m?.count ?: 0, meanScore = m?.meanScore ?: 0.0, standardDeviation = m?.standardDeviation ?: 0.0,
+            progress = m?.chaptersRead ?: 0, secondary = m?.volumesRead ?: 0,
+            planned = m?.statuses.orEmpty().firstOrNull { it?.status?.rawValue == "PLANNING" }?.chaptersRead ?: 0,
+            lengths = m?.lengths.orEmpty().mapNotNull { l -> l?.length?.let { it to l.count } }.sortedBy { order(it.first) },
+            formats = m?.formats.orEmpty().mapNotNull { f -> f?.format?.rawValue?.let { it to f.count } },
+            statuses = m?.statuses.orEmpty().mapNotNull { x -> status(x?.status?.rawValue)?.let { it to x!!.count } },
+            genres = m?.genres.orEmpty().mapNotNull { g -> g?.genre?.let { Triple(it, g.count, g.meanScore) } },
+        )
+        return UserStats(u.id, u.name, anime, manga)
+    }
+
     /** Muda a cor do meu perfil no AniList (blue, purple, pink, orange, red, green, gray). */
     suspend fun setProfileColor(color: String) {
         api.run(api.apollo.mutation(dev.viko.listaanimes.graphql.UpdateProfileColorMutation(color)))

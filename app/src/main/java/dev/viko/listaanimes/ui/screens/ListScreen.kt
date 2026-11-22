@@ -108,6 +108,18 @@ class ListViewModel(private val c: AppContainer, val kind: MediaKind) : ViewMode
     val refreshing = MutableStateFlow(false)
     val error = MutableStateFlow<String?>(null)
 
+    // A ordenação escolhida fica salva: fechar e abrir a lista não volta para "Última atualização".
+    init {
+        viewModelScope.launch {
+            c.settings.listSort(kind)?.let { n -> ListSort.entries.firstOrNull { it.name == n } }?.let { sort.value = it }
+        }
+    }
+
+    fun setSort(v: ListSort) {
+        sort.value = v
+        viewModelScope.launch { c.settings.setListSort(kind, v.name) }
+    }
+
     fun refresh() = viewModelScope.launch {
         refreshing.value = true
         try { c.lists.fullSync(); error.value = null } catch (e: Exception) { error.value = SYNC_ERROR } finally { refreshing.value = false }
@@ -145,7 +157,7 @@ fun ListScreen(nav: Nav, kind: MediaKind) {
                     ListSort.entries.forEach {
                         DropdownMenuItem(
                             text = { Text(it.label, color = if (it == sort) AppTheme.palette.accent else AppTheme.palette.text) },
-                            onClick = { vm.sort.value = it; sortMenu = false },
+                            onClick = { vm.setSort(it); sortMenu = false },
                         )
                     }
                 }

@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.Forum
@@ -477,11 +478,17 @@ fun ProfileScreen(nav: Nav, userId: Int?, name: String?) {
             )
             Spacer(Modifier.height(12.dp))
             val pt = dev.viko.listaanimes.i18n.I18n.locale
-            Row(Modifier.fillMaxWidth().padding(horizontal = 20.dp), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                Modifier.fillMaxWidth().padding(horizontal = 12.dp).clip(RoundedCornerShape(12.dp))
+                    .then(if (vm.secret) Modifier else Modifier.pressable(onClick = { nav.stats(pr.id) }))
+                    .padding(horizontal = 8.dp, vertical = 6.dp),
+                horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically,
+            ) {
                 Stat("${pr.animeCount}", "animes")
                 Stat("%.1f".format(pt, pr.minutesWatched / 1440.0), t("dias"))
                 Stat("${pr.mangaCount}", t("mangás"))
                 Stat("${pr.chaptersRead}", t("capítulos"))
+                if (!vm.secret) Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, t("Estatísticas"), tint = p.textTertiary)
             }
             Spacer(Modifier.height(12.dp))
             error?.let { MessageBar(it) }

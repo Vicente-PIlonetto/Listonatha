@@ -118,6 +118,8 @@ class SettingsRepository(private val context: Context) {
         val nData = booleanPreferencesKey("notify_data_change")
         val scheduleAll = booleanPreferencesKey("schedule_show_all")
         val collapsed = stringSetPreferencesKey("home_collapsed")
+        val sortAnime = stringPreferencesKey("list_sort_anime")
+        val sortManga = stringPreferencesKey("list_sort_manga")
         val statusOrder = stringPreferencesKey("status_order")
         val homeHidden = stringSetPreferencesKey("home_hidden")
         val viewerId = intPreferencesKey("viewer_id")
@@ -211,6 +213,11 @@ class SettingsRepository(private val context: Context) {
     suspend fun setNotifyRelated(v: Boolean) = context.dataStore.edit { it[K.nRelated] = v }
     suspend fun setNotifyDataChange(v: Boolean) = context.dataStore.edit { it[K.nData] = v }
     suspend fun setScheduleShowAll(v: Boolean) = context.dataStore.edit { it[K.scheduleAll] = v }
+    /** Ordenação escolhida na lista completa (nome do ListSort), uma por tipo. */
+    suspend fun listSort(kind: dev.viko.listaanimes.domain.MediaKind): String? =
+        context.dataStore.data.first()[if (kind == dev.viko.listaanimes.domain.MediaKind.ANIME) K.sortAnime else K.sortManga]
+    suspend fun setListSort(kind: dev.viko.listaanimes.domain.MediaKind, name: String) =
+        context.dataStore.edit { it[if (kind == dev.viko.listaanimes.domain.MediaKind.ANIME) K.sortAnime else K.sortManga] = name }
     suspend fun setStatusOrder(v: List<ListStatus>) = context.dataStore.edit { it[K.statusOrder] = normalizeStatusOrder(v).joinToString(",") { s -> s.name } }
     suspend fun setHomeHidden(v: Set<ListStatus>) = context.dataStore.edit { it[K.homeHidden] = v.map { s -> s.name }.toSet() }
     suspend fun resetStatusOrder() = context.dataStore.edit { it.remove(K.statusOrder); it.remove(K.homeHidden) }
