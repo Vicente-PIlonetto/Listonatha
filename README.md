@@ -32,12 +32,12 @@ O AniList é ótimo para organizar o que você assiste e lê, mas no celular o d
 <tr>
 <td width="80" align="center"><img src="docs/img/icons/acompanhar.svg" width="56" alt="" /></td>
 <td><b>Acompanhe sem esforço</b><br/>
-Um toque no +1 e o episódio ou capítulo está marcado. O Início separa o que você está <i>vendo</i>, <i>quer ver</i>, <i>revendo</i> e <i>pausou</i>, e destaca quando há episódio novo esperando por você. Segurando o dedo numa capa, você muda o status ou dá nota sem abrir nada.</td>
+Um toque no +1 e o episódio ou capítulo está marcado. O Início separa o que você está <i>vendo</i>, <i>quer ver</i>, <i>revendo</i> e <i>pausou</i>, e destaca quando há episódio novo esperando por você. A ordem dessas categorias é sua: escolha qual vem primeiro e quais aparecem como aba. Segurando o dedo numa capa, você muda o status ou dá nota sem abrir nada.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/notas.svg" width="56" alt="" /></td>
 <td><b>Notas do seu jeito</b><br/>
-Letras (de F a A++), 5 estrelas, carinhas, de 0 a 10 ou de 0 a 100. E as notas especiais, de S até SSS+++, para aquela obra que merece mais que a nota máxima. Dá para mostrar duas escalas ao mesmo tempo.</td>
+Letras (de F a A++), 5 estrelas, carinhas coloridas (do vermelho de "Detestei" ao verde de "Adorei"), de 0 a 10 ou de 0 a 100. E as notas especiais, de S até SSS+++, para aquela obra que merece mais que a nota máxima. Dá para mostrar duas escalas ao mesmo tempo.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/agenda.svg" width="56" alt="" /></td>
@@ -48,6 +48,16 @@ A Agenda mostra o que sai na semana, dia a dia, e o calendário do mês inteiro,
 <td align="center"><img src="docs/img/icons/descobrir.svg" width="56" alt="" /></td>
 <td><b>Ache o próximo favorito</b><br/>
 Em alta, temporada atual e a próxima, recomendações a partir das suas melhores notas, filtros por gênero e por nichos como isekai e iyashikei, e um botão de sortear para quando bater a dúvida. Cada obra mostra onde assistir e abre direto no app do serviço.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/estatisticas.svg" width="56" alt="" /></td>
+<td><b>Seus números</b><br/>
+Quantos animes e mangás, episódios e capítulos, dias assistidos e planejados, sua nota média e como suas notas se distribuem, já no sistema de nota que você usa. Também mostra status, formatos e os gêneros que você mais vê. Vale para o seu perfil e para o de qualquer pessoa.</td>
+</tr>
+<tr>
+<td align="center"><img src="docs/img/icons/leitores.svg" width="56" alt="" /></td>
+<td><b>Leia e assista no app que você já usa</b><br/>
+Se você tem o Komikku, o Mihon ou o Aniyomi, a página da obra mostra <i>Ler em</i> ou <i>Assistir em</i> e abre a busca dele já com o título. E o botão de compartilhar manda a obra para um amigo com o link do AniList.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/social.svg" width="56" alt="" /></td>
@@ -90,7 +100,9 @@ Para atualizar, baixe a versão nova e instale por cima. Sua lista, notas e conf
 
 - **Escolha seu sistema de notas** em *Configurações > Sistemas de nota*. Se você usa letras, as notas especiais aparecem no seletor.
 - **Ligue os avisos** em *Configurações > Notificações* para saber quando sai episódio do que você está vendo.
+- **Arrume as categorias** em *Configurações > Listas e títulos > Ordem das categorias*. A ordem vale para o Início e para a lista completa.
 - **Marque seus serviços de streaming** para eles aparecerem primeiro em "Onde assistir".
+- **Veja suas estatísticas** em *Você > Ver estatísticas*.
 - **Deixe com a sua cara** em *Você > Personalizar*.
 
 ## Perguntas frequentes
