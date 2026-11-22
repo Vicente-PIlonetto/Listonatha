@@ -601,5 +601,8 @@
  "Ordem das categorias": "Порядок категорий",
  "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Действует на главной и в полном списке. Переключатель показывает категорию вкладкой на главной.",
  "Perfil secreto": "Секретный профиль",
- "Nada por aqui. Só pirulito.": "Здесь пусто. Только леденцы."
+ "Nada por aqui. Só pirulito.": "Здесь пусто. Только леденцы.",
+ "Ler em": "Читать в",
+ "Assistir em": "Смотреть в",
+ "Busca por \"{0}\"": "Поиск «{0}»"
 }

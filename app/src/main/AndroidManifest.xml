@@ -27,6 +27,10 @@
         <package android:name="jp.kakao.piccoma" />
         <package android:name="jp.naver.linemanga.android" />
         <package android:name="tv.pluto.android" />
+        <!-- Leitores com extensões (Ler em / Assistir em) -->
+        <package android:name="app.komikku" />
+        <package android:name="app.mihon" />
+        <package android:name="xyz.jmir.tachiyomi.mi" />
     </queries>
 
     <application

@@ -601,5 +601,8 @@
  "Ordem das categorias": "Category order",
  "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Applies to Home and the full list. The switch shows the category as a tab on Home.",
  "Perfil secreto": "Secret profile",
- "Nada por aqui. Só pirulito.": "Nothing here. Just lollipops."
+ "Nada por aqui. Só pirulito.": "Nothing here. Just lollipops.",
+ "Ler em": "Read in",
+ "Assistir em": "Watch in",
+ "Busca por \"{0}\"": "Searches for \"{0}\""
 }
