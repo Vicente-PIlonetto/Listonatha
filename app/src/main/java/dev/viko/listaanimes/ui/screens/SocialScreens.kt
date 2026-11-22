@@ -376,9 +376,18 @@ class ProfileViewModel(private val c: AppContainer, private val userId: Int?, pr
 
     val follows = MutableStateFlow<Pair<Int, Int>?>(null)
 
+    /** Perfil secreto (easter egg): montado no app, nada de follow, feed ou lista no AniList. */
+    // Abre pelo nome: a rota de perfil ignora ids <= 0.
+    val secret = userId == dev.viko.listaanimes.data.repo.SecretProfile.ID || dev.viko.listaanimes.data.repo.SecretProfile.matches(name)
+
     init { load() }
 
     fun load() = viewModelScope.launch {
+        if (secret) {
+            profile.value = dev.viko.listaanimes.data.repo.SecretProfile.build(c)
+            follows.value = 0 to 0
+            return@launch
+        }
         try {
             val pr = c.social.profile(userId, name)
             profile.value = pr; error.value = null
@@ -389,6 +398,7 @@ class ProfileViewModel(private val c: AppContainer, private val userId: Int?, pr
     fun loadList(kind: MediaKind) = viewModelScope.launch {
         val id = profile.value?.id ?: return@launch
         listKind.value = kind
+        if (secret) { list.value = emptyList(); return@launch }
         list.value = null
         try { list.value = c.social.userList(id, kind) } catch (e: Exception) { error.value = e.toUserMessage(); list.value = emptyList() }
     }
@@ -396,6 +406,7 @@ class ProfileViewModel(private val c: AppContainer, private val userId: Int?, pr
     fun toggleFollow() = viewModelScope.launch {
         val pr = profile.value ?: return@launch
         profile.value = pr.copy(isFollowing = !pr.isFollowing)
+        if (secret) return@launch
         try { profile.value = pr.copy(isFollowing = c.social.toggleFollow(pr.id)) } catch (e: Exception) {
             profile.value = pr; error.value = t("Não foi possível seguir. Tente de novo.")
         }
@@ -410,7 +421,7 @@ fun ProfileScreen(nav: Nav, userId: Int?, name: String?) {
     val follows by vm.follows.collectAsStateWithLifecycle()
     val me = LocalViewerId.current
     val p = AppTheme.palette
-    var tab by remember { mutableStateOf(0) }
+    var tab by remember { mutableStateOf(if (vm.secret) 2 else 0) }
     val pr = profile
     if (pr == null) {
         Column(Modifier.fillMaxSize()) {
@@ -445,7 +456,7 @@ fun ProfileScreen(nav: Nav, userId: Int?, name: String?) {
                 color = if (mine) dev.viko.listaanimes.data.settings.ProfileColor.byId(myStyle.colorId) ?: dev.viko.listaanimes.data.settings.ProfileColor.fromAniList(pr.profileColor)
                     else dev.viko.listaanimes.data.settings.ProfileColor.fromAniList(pr.profileColor),
                 animated = if (mine) myStyle.animatedBg else dev.viko.listaanimes.data.settings.AnimatedBg.NONE,
-                subtitle = if (pr.isFollower) t("Segue você") else null,
+                subtitle = if (vm.secret) t("Perfil secreto") else if (pr.isFollower) t("Segue você") else null,
                 top = {
                     IconButton(onClick = nav::back, colors = IconButtonDefaults.iconButtonColors(containerColor = p.background.copy(alpha = 0.7f))) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, t("Voltar"))
@@ -481,7 +492,10 @@ fun ProfileScreen(nav: Nav, userId: Int?, name: String?) {
             ThinDivider()
         }
         when (tab) {
-            0 -> FeedList(feed, nav) { header() }
+            0 -> if (vm.secret) LazyColumn(Modifier.fillMaxSize(), state = state) {
+                item { header() }
+                item { EmptyState(t("Nada por aqui. Só pirulito.")) }
+            } else FeedList(feed, nav) { header() }
             else -> LazyColumn(Modifier.fillMaxSize(), state = state) {
                 item { header() }
                 when (tab) {
@@ -518,7 +532,7 @@ private fun ProfileList(vm: ProfileViewModel, nav: Nav) {
         val l = list
         if (l == null) { dev.viko.listaanimes.ui.components.SkeletonRows(5); return@Column }
         if (l.isEmpty()) EmptyState(t("Lista vazia ou privada."))
-        ListStatus.displayOrder.forEach { st ->
+        dev.viko.listaanimes.ui.components.LocalSettings.current.statusOrder.forEach { st ->
             val group = l.filter { it.entry.status == st }.sortedByDescending { it.entry.updatedAt }
             if (group.isEmpty()) return@forEach
             Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(start = 20.dp, top = 16.dp)) {
@@ -572,6 +586,10 @@ fun UserSearchScreen(nav: Nav) {
         TopBar(t("Buscar usuários"), onBack = nav::back)
         OutlinedTextField(q, { q = it }, singleLine = true, placeholder = { Text(t("Nome de usuário")) },
             modifier = Modifier.fillMaxWidth().padding(horizontal = 20.dp, vertical = 4.dp), shape = RoundedCornerShape(4.dp))
+        if (dev.viko.listaanimes.data.repo.SecretProfile.matches(applied)) {
+            UserRow(dev.viko.listaanimes.data.repo.SecretProfile.ref) { nav.profileByName(dev.viko.listaanimes.data.repo.SecretProfile.NAME) }
+            ThinDivider()
+        }
         if (applied.length < 2) EmptyState(t("Digite pelo menos duas letras."))
         else {
             val vm = appViewModel(key = "users-$applied") { c -> UsersViewModel(c) { page -> c.social.searchUsers(applied, page) } }

@@ -593,5 +593,13 @@
  "Nada aqui.": "Nada aquí.",
  "Desenvolvido por": "Desarrollado por",
  "Perfil no AniList": "Perfil en AniList",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limita las búsquedas por minuto. Continúa en {0} s."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limita las búsquedas por minuto. Continúa en {0} s.",
+ "Subir": "Subir",
+ "Descer": "Bajar",
+ "Voltar ao padrão": "Restablecer",
+ "Compartilhar": "Compartir",
+ "Ordem das categorias": "Orden de las categorías",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Se aplica a Inicio y a la lista completa. El interruptor muestra la categoría como pestaña en Inicio.",
+ "Perfil secreto": "Perfil secreto",
+ "Nada por aqui. Só pirulito.": "Nada por aquí. Solo piruletas."
 }

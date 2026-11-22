@@ -593,5 +593,13 @@
  "Nada aqui.": "Здесь пусто.",
  "Desenvolvido por": "Разработчик",
  "Perfil no AniList": "Профиль на AniList",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList ограничивает число запросов в минуту. Продолжим через {0} с."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList ограничивает число запросов в минуту. Продолжим через {0} с.",
+ "Subir": "Выше",
+ "Descer": "Ниже",
+ "Voltar ao padrão": "Сбросить",
+ "Compartilhar": "Поделиться",
+ "Ordem das categorias": "Порядок категорий",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Действует на главной и в полном списке. Переключатель показывает категорию вкладкой на главной.",
+ "Perfil secreto": "Секретный профиль",
+ "Nada por aqui. Só pirulito.": "Здесь пусто. Только леденцы."
 }

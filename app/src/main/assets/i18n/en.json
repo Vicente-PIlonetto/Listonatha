@@ -593,5 +593,13 @@
  "Nada aqui.": "Nothing here.",
  "Desenvolvido por": "Developed by",
  "Perfil no AniList": "AniList profile",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limits searches per minute. Continuing in {0} s."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limits searches per minute. Continuing in {0} s.",
+ "Subir": "Move up",
+ "Descer": "Move down",
+ "Voltar ao padrão": "Reset to default",
+ "Compartilhar": "Share",
+ "Ordem das categorias": "Category order",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Applies to Home and the full list. The switch shows the category as a tab on Home.",
+ "Perfil secreto": "Secret profile",
+ "Nada por aqui. Só pirulito.": "Nothing here. Just lollipops."
 }

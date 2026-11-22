@@ -28,6 +28,8 @@ import androidx.compose.material.icons.outlined.Notifications
 import androidx.compose.material.icons.outlined.CloudSync
 import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.KeyboardArrowDown
 import dev.viko.listaanimes.ui.components.enterAnimation
 import androidx.compose.ui.graphics.luminance
 import androidx.compose.foundation.layout.Column
@@ -190,6 +192,14 @@ fun SettingsScreen(nav: Nav, section: String? = null) {
                         SwitchRow(t("Mostrar listas em grade"), s.gridLayout) { v -> scope.launch { c.settings.setGridLayout(v) } }
                         SwitchRow(t("Dar nota direto na grade"), s.gridScore) { v -> scope.launch { c.settings.setGridScore(v) } }
                         SwitchRow(t("Pedir nota ao marcar como completo"), s.askScoreOnComplete) { v -> scope.launch { c.settings.setAskScoreOnComplete(v) } }
+                    }
+                    Group(t("Ordem das categorias")) {
+                        StatusOrderEditor(
+                            s.statusOrder, s.homeHidden,
+                            onOrder = { v -> scope.launch { c.settings.setStatusOrder(v) } },
+                            onHidden = { v -> scope.launch { c.settings.setHomeHidden(v) } },
+                            onReset = { scope.launch { c.settings.resetStatusOrder() } },
+                        )
                     }
                     Group(t("Idioma dos títulos")) {
                         Options(TitleLanguage.entries.map { it to it.label }, s.titleLanguage) { scope.launch { c.settings.setTitleLanguage(it, fromAccount = false) } }
@@ -421,5 +431,53 @@ private fun MiniIcon(a: dev.viko.listaanimes.data.settings.Accent, dark: Boolean
         val u = size.width / 108f
         for (y in listOf(40f, 52f, 64f)) drawRect(bars, androidx.compose.ui.geometry.Offset(36f * u, y * u), androidx.compose.ui.geometry.Size(28f * u, 4f * u))
         drawCircle(dot, 4f * u, androidx.compose.ui.geometry.Offset(74f * u, 42f * u))
+    }
+}
+
+/**
+ * Ordem das categorias (status): vale para o Início e para a lista completa.
+ * As setas mudam a posição; o switch diz se a categoria vira aba no Início (pelo menos uma fica).
+ */
+@Composable
+private fun StatusOrderEditor(
+    order: List<dev.viko.listaanimes.domain.ListStatus>,
+    hidden: Set<dev.viko.listaanimes.domain.ListStatus>,
+    onOrder: (List<dev.viko.listaanimes.domain.ListStatus>) -> Unit,
+    onHidden: (Set<dev.viko.listaanimes.domain.ListStatus>) -> Unit,
+    onReset: () -> Unit,
+) {
+    val p = AppTheme.palette
+    val shownOnHome = order.count { it !in hidden }
+    Text(
+        t("Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início."),
+        style = MaterialTheme.typography.bodySmall, color = p.textSecondary,
+        modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp, bottom = 4.dp),
+    )
+    order.forEachIndexed { index, st ->
+        val onHome = st !in hidden
+        val col = dev.viko.listaanimes.ui.theme.statusColor(st)
+        val anime = st.label(dev.viko.listaanimes.domain.MediaKind.ANIME)
+        val manga = st.label(dev.viko.listaanimes.domain.MediaKind.MANGA)
+        Row(Modifier.fillMaxWidth().padding(start = 16.dp, end = 8.dp, top = 2.dp, bottom = 2.dp), verticalAlignment = Alignment.CenterVertically) {
+            Text("${index + 1}", style = dev.viko.listaanimes.ui.theme.Mono.style(12), color = p.textTertiary, modifier = Modifier.width(18.dp))
+            dev.viko.listaanimes.ui.components.StatusIcon(st, dev.viko.listaanimes.domain.MediaKind.ANIME, col, 20.dp)
+            Spacer(Modifier.width(10.dp))
+            Text(if (anime == manga) anime else "$anime / $manga", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+            androidx.compose.material3.IconButton(
+                onClick = { onOrder(order.toMutableList().apply { add(index - 1, removeAt(index)) }) }, enabled = index > 0,
+            ) { androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Filled.KeyboardArrowUp, t("Subir"), tint = if (index > 0) p.text else p.divider) }
+            androidx.compose.material3.IconButton(
+                onClick = { onOrder(order.toMutableList().apply { add(index + 1, removeAt(index)) }) }, enabled = index < order.lastIndex,
+            ) { androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Filled.KeyboardArrowDown, t("Descer"), tint = if (index < order.lastIndex) p.text else p.divider) }
+            Switch(
+                checked = onHome,
+                onCheckedChange = { v -> onHidden(if (v) hidden - st else hidden + st) },
+                enabled = !onHome || shownOnHome > 1,
+                colors = SwitchDefaults.colors(checkedTrackColor = p.accent, checkedThumbColor = p.background, uncheckedBorderColor = p.divider, uncheckedTrackColor = p.background, uncheckedThumbColor = p.textTertiary),
+            )
+        }
+    }
+    if (order != dev.viko.listaanimes.data.settings.DEFAULT_STATUS_ORDER || hidden != dev.viko.listaanimes.data.settings.DEFAULT_HOME_HIDDEN) {
+        LinkRow(t("Voltar ao padrão"), onClick = onReset)
     }
 }

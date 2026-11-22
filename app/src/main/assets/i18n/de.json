@@ -593,5 +593,13 @@
  "Nada aqui.": "Nichts hier.",
  "Desenvolvido por": "Entwickelt von",
  "Perfil no AniList": "AniList-Profil",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList begrenzt Suchen pro Minute. Weiter in {0} s."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList begrenzt Suchen pro Minute. Weiter in {0} s.",
+ "Subir": "Nach oben",
+ "Descer": "Nach unten",
+ "Voltar ao padrão": "Auf Standard zurücksetzen",
+ "Compartilhar": "Teilen",
+ "Ordem das categorias": "Reihenfolge der Kategorien",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "Gilt für die Startseite und die vollständige Liste. Der Schalter zeigt die Kategorie als Tab auf der Startseite.",
+ "Perfil secreto": "Geheimes Profil",
+ "Nada por aqui. Só pirulito.": "Hier ist nichts. Nur Lutscher."
 }

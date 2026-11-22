@@ -593,5 +593,13 @@
  "Nada aqui.": "Rien ici.",
  "Desenvolvido por": "Développé par",
  "Perfil no AniList": "Profil AniList",
- "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limite les recherches par minute. Reprise dans {0} s."
+ "O AniList limita as buscas por minuto. Continuando em {0} s.": "AniList limite les recherches par minute. Reprise dans {0} s.",
+ "Subir": "Monter",
+ "Descer": "Descendre",
+ "Voltar ao padrão": "Rétablir par défaut",
+ "Compartilhar": "Partager",
+ "Ordem das categorias": "Ordre des catégories",
+ "Vale para o Início e a lista completa. O switch mostra a categoria como aba no Início.": "S'applique à l'accueil et à la liste complète. L'interrupteur affiche la catégorie comme onglet sur l'accueil.",
+ "Perfil secreto": "Profil secret",
+ "Nada por aqui. Só pirulito.": "Rien ici. Que des sucettes."
 }
