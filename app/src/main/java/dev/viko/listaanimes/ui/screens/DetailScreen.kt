@@ -220,6 +220,7 @@ fun DetailScreen(nav: Nav, id: Int, coverKey: String? = null) {
         detail?.let { d ->
             if (d.description.isNotBlank()) item { Synopsis(d.description) }
             if (d.links.isNotEmpty()) item { WhereToWatch(d.links, s.myServices) { link -> dev.viko.listaanimes.ui.components.StreamingApps.open(ctx, link.site, link.url) } }
+            item { OpenInReader(media) }
             if (d.relations.isNotEmpty()) item {
                 SectionHeader(t("Relações"))
                 LazyRow(contentPadding = PaddingValues(horizontal = 20.dp), horizontalArrangement = Arrangement.spacedBy(14.dp)) {
@@ -580,6 +581,43 @@ private fun WhereToWatch(links: List<StreamLink>, mine: Set<String>, open: (Stre
                     },
                     style = MaterialTheme.typography.labelMedium, color = brand,
                 )
+            }
+        }
+    }
+}
+
+/** "Ler no Komikku" etc.: só aparece se algum leitor com extensões estiver instalado. */
+@Composable
+private fun OpenInReader(media: Media) {
+    val p = AppTheme.palette
+    val ctx = LocalContext.current
+    val apps = remember(media.kind) { dev.viko.listaanimes.ui.components.ReaderApps.installed(ctx, media.kind) }
+    if (apps.isEmpty()) return
+    // Romaji costuma achar mais nas fontes; sem ele, o título que estiver.
+    val query = media.titleRomaji ?: media.titleEnglish ?: media.titleNative ?: return
+    SectionHeader(if (media.kind == MediaKind.ANIME) t("Assistir em") else t("Ler em"))
+    Column(Modifier.padding(horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+        apps.forEach { app ->
+            val icon = remember(app.pkg) {
+                dev.viko.listaanimes.ui.components.ReaderApps.icon(ctx, app)?.let { d -> runCatching { d.toBitmap(96, 96).asImageBitmap() }.getOrNull() }
+            }
+            Row(
+                Modifier.fillMaxWidth().clip(RoundedCornerShape(14.dp)).background(p.accent.copy(alpha = 0.10f))
+                    .pressable(onClick = { dev.viko.listaanimes.ui.components.ReaderApps.open(ctx, app, media.kind, query) })
+                    .padding(horizontal = 14.dp, vertical = 12.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Box(Modifier.size(36.dp).clip(RoundedCornerShape(10.dp)).background(p.surfaceAlt), contentAlignment = Alignment.Center) {
+                    if (icon != null) androidx.compose.foundation.Image(icon, null, modifier = Modifier.fillMaxSize())
+                    else Text(app.name.take(1), style = MaterialTheme.typography.titleMedium)
+                }
+                Spacer(Modifier.width(12.dp))
+                Column(Modifier.weight(1f)) {
+                    Text(app.name, style = MaterialTheme.typography.bodyLarge)
+                    Text(t("Busca por \"{0}\"", query), style = MaterialTheme.typography.bodySmall, color = p.textSecondary, maxLines = 1,
+                        overflow = TextOverflow.Ellipsis)
+                }
+                Text(t("Abrir no app"), style = MaterialTheme.typography.labelMedium, color = p.accent)
             }
         }
     }

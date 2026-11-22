@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
@@ -32,6 +33,27 @@ import dev.viko.listaanimes.domain.score.ScoreSystem
 import dev.viko.listaanimes.domain.score.Scores
 import dev.viko.listaanimes.ui.theme.AppTheme
 import dev.viko.listaanimes.ui.theme.Mono
+
+/**
+ * Cor de cada carinha, da pior para a melhor: vermelho, laranja, amarelo, branco, ciano, azul, verde.
+ * No tema claro o branco vira cinza e o amarelo escurece, para aparecerem no fundo claro.
+ * Nas 3 carinhas (níveis 2, 4 e 6): triste vermelho, neutra branca, feliz verde.
+ */
+@Composable
+fun faceColor(level: Int, threeFaces: Boolean = false): Color {
+    val dark = AppTheme.palette.background.luminance() < 0.5f
+    val l = if (threeFaces) when (level) { 2 -> 1; 4 -> 4; else -> 7 } else level.coerceIn(1, 7)
+    val (d, li) = when (l) {
+        1 -> 0xFFE5484D to 0xFFC62828
+        2 -> 0xFFF28C38 to 0xFFD9480F
+        3 -> 0xFFF5D547 to 0xFFB08900
+        4 -> 0xFFF2F2F2 to 0xFF8A8A8A
+        5 -> 0xFF4FD1E0 to 0xFF0E8FA0
+        6 -> 0xFF4F8DF5 to 0xFF1E5FC7
+        else -> 0xFF4CC95A to 0xFF2E8B3D
+    }
+    return Color(if (dark) d else li)
+}
 
 /**
  * Carinha de traço fino, desenhada no estilo do app. [level] de 1 (Detestei) a 7 (Adorei).
@@ -120,7 +142,7 @@ fun ScoreGlyph(raw: Int, system: ScoreSystem, special: Int?, fontSize: Int, icon
             color = if (d.special) p.accent else color,
         )
         is ScoreDisplay.Stars -> StarsView(d.halves, iconSize * 0.8f, color)
-        is ScoreDisplay.Face -> FaceIcon(d.level, color, iconSize, label = d.label)
+        is ScoreDisplay.Face -> FaceIcon(d.level, faceColor(d.level, system == ScoreSystem.SMILEY_3), iconSize, label = d.label)
     }
 }
 

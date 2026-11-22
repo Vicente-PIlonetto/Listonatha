@@ -1,5 +1,7 @@
 package dev.viko.listaanimes.ui.screens
 
+import androidx.compose.material.icons.outlined.BarChart
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.foundation.layout.heightIn
@@ -178,6 +180,16 @@ fun YouScreen(nav: Nav) {
                             Text(t("Média mangá"), style = MaterialTheme.typography.labelMedium, color = p.textSecondary)
                             meanRaw(entries, MediaKind.MANGA)?.let { ScoreView(it, null, s.primaryScore, s.secondaryScore, ScoreSize.Normal) } ?: Dash()
                         }
+                    }
+                    if (pr != null) Row(
+                        Modifier.fillMaxWidth().clip(RoundedCornerShape(16.dp)).background(p.surfaceAlt)
+                            .clickable { nav.stats(pr.id) }.padding(horizontal = 16.dp, vertical = 14.dp),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.Outlined.BarChart, null, tint = p.accent, modifier = Modifier.size(20.dp))
+                        Spacer(Modifier.width(12.dp))
+                        Text(t("Ver estatísticas"), style = MaterialTheme.typography.bodyLarge, modifier = Modifier.weight(1f))
+                        androidx.compose.material3.Icon(androidx.compose.material.icons.Icons.AutoMirrored.Filled.KeyboardArrowRight, null, tint = p.textTertiary)
                     }
                 }
             }

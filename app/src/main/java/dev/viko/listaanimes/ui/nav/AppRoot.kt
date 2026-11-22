@@ -135,6 +135,7 @@ class Nav(private val c: NavHostController) {
     fun activity(id: Int) = c.navigate("activity/$id")
     fun follows(userId: Int, followers: Boolean) = c.navigate("follows/$userId/$followers")
     fun userSearch() = c.navigate("users")
+    fun stats(userId: Int) = c.navigate("stats/$userId")
     fun forum(mediaId: Int? = null, title: String? = null) =
         c.navigate("forum?media=${mediaId ?: -1}&title=${Uri.encode(title.orEmpty())}")
     fun thread(id: Int) = c.navigate("thread/$id")
@@ -418,6 +419,9 @@ private fun NavGraphBuilder.graph(nav: Nav) {
         navArgument("followers") { type = NavType.BoolType },
     )) { FollowsScreen(nav, it.arguments!!.getInt("userId"), it.arguments!!.getBoolean("followers")) }
     screen("users") { UserSearchScreen(nav) }
+    screen("stats/{userId}", listOf(navArgument("userId") { type = NavType.IntType })) {
+        dev.viko.listaanimes.ui.screens.StatsScreen(nav, it.arguments!!.getInt("userId"))
+    }
     screen("customize") { dev.viko.listaanimes.ui.screens.CustomizeProfileScreen(nav) }
     screen("forum?media={media}&title={title}", listOf(
         navArgument("media") { type = NavType.IntType; defaultValue = -1 },

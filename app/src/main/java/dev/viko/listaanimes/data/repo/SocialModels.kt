@@ -93,3 +93,23 @@ object ForumCategories {
     )
     fun name(id: Int, fallback: String) = all.firstOrNull { it.first == id }?.second ?: fallback
 }
+
+/** Estatísticas de um tipo (anime ou mangá), no formato da tela Estatísticas. */
+data class KindStats(
+    val count: Int,
+    val meanScore: Double,
+    val standardDeviation: Double,
+    /** Anime: minutos assistidos. Mangá: capítulos lidos. */
+    val progress: Int,
+    /** Anime: episódios. Mangá: volumes. */
+    val secondary: Int,
+    /** Anime: minutos planejados. Mangá: capítulos planejados. */
+    val planned: Int,
+    /** Faixas de tamanho (episódios ou capítulos), em ordem crescente. */
+    val lengths: List<Pair<String, Int>>,
+    val formats: List<Pair<String, Int>>,
+    val statuses: List<Pair<ListStatus, Int>>,
+    val genres: List<Triple<String, Int, Double>>,
+)
+
+data class UserStats(val id: Int, val name: String, val anime: KindStats, val manga: KindStats)

@@ -126,3 +126,25 @@ query FollowCounts($id: Int!) {
 mutation UpdateAbout($about: String!) {
   UpdateUser(about: $about) { id about(asHtml: false) }
 }
+
+query UserStats($id: Int!) {
+  User(id: $id) {
+    id name
+    statistics {
+      anime {
+        count meanScore standardDeviation minutesWatched episodesWatched
+        lengths { length count }
+        formats(sort: COUNT_DESC) { format count }
+        statuses { status count minutesWatched }
+        genres(limit: 8, sort: COUNT_DESC) { genre count meanScore }
+      }
+      manga {
+        count meanScore standardDeviation chaptersRead volumesRead
+        lengths { length count }
+        formats(sort: COUNT_DESC) { format count }
+        statuses { status count chaptersRead }
+        genres(limit: 8, sort: COUNT_DESC) { genre count meanScore }
+      }
+    }
+  }
+}
