@@ -47,9 +47,12 @@ data class UserProfileData(
     val favCharacters: List<FavCharacter> = emptyList(),
     /** options.profileColor do AniList (nome ou #hex). */
     val profileColor: String? = null,
+    /** Formato de nota que a pessoa usa no AniList. */
+    val scoreSystem: dev.viko.listaanimes.domain.score.ScoreSystem? = null,
 )
 
-data class FriendEntry(val user: UserRef, val status: ListStatus?, val scoreRaw: Int, val progress: Int)
+/** [system] = formato de nota que a pessoa usa no AniList (a nota aparece nele). */
+data class FriendEntry(val user: UserRef, val status: ListStatus?, val scoreRaw: Int, val progress: Int, val system: dev.viko.listaanimes.domain.score.ScoreSystem? = null)
 
 data class ThreadItem(
     val id: Int,

@@ -633,5 +633,9 @@
  "Chave aleatória": "Random key",
  "Código copiado": "Code copied",
  "Copiar código Pix": "Copy Pix code",
- "Fechar": "Close"
+ "Fechar": "Close",
+ "Anime de {0}": "{0}'s anime",
+ "Mangá de {0}": "{0}'s manga",
+ "Abrir lista completa de anime": "Open full anime list",
+ "Abrir lista completa de mangá": "Open full manga list"
 }

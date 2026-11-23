@@ -100,8 +100,13 @@ object ListLogic {
     }
 }
 
-class ListViewModel(private val c: AppContainer, val kind: MediaKind) : ViewModel() {
-    val entries = c.lists.observe(kind).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+/** Lista de outra pessoa, só para ver: [system] é o formato de nota que ela usa no AniList. */
+data class OtherList(val userId: Int, val name: String, val system: dev.viko.listaanimes.domain.score.ScoreSystem?)
+
+class ListViewModel(private val c: AppContainer, val kind: MediaKind, private val other: OtherList? = null) : ViewModel() {
+    private val remote = MutableStateFlow<List<EntryWithMedia>?>(null)
+    val entries: kotlinx.coroutines.flow.StateFlow<List<EntryWithMedia>?> =
+        if (other == null) c.lists.observe(kind).stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null) else remote
     val filter = MutableStateFlow(ListFilter())
     val sort = MutableStateFlow(ListSort.UPDATED)
     val query = MutableStateFlow("")
@@ -110,6 +115,7 @@ class ListViewModel(private val c: AppContainer, val kind: MediaKind) : ViewMode
 
     // A ordenação escolhida fica salva: fechar e abrir a lista não volta para "Última atualização".
     init {
+        if (other != null) loadOther()
         viewModelScope.launch {
             c.settings.listSort(kind)?.let { n -> ListSort.entries.firstOrNull { it.name == n } }?.let { sort.value = it }
         }
@@ -121,8 +127,17 @@ class ListViewModel(private val c: AppContainer, val kind: MediaKind) : ViewMode
     }
 
     fun refresh() = viewModelScope.launch {
+        if (other != null) { loadOther(); return@launch }
         refreshing.value = true
         try { c.lists.fullSync(); error.value = null } catch (e: Exception) { error.value = SYNC_ERROR } finally { refreshing.value = false }
+    }
+
+    private fun loadOther() = viewModelScope.launch {
+        val o = other ?: return@launch
+        refreshing.value = true
+        try { remote.value = c.social.userList(o.userId, kind); error.value = null }
+        catch (e: Exception) { error.value = e.toUserMessage(); if (remote.value == null) remote.value = emptyList() }
+        finally { refreshing.value = false }
     }
 
     fun increment(id: Int) = viewModelScope.launch { c.lists.increment(id) }
@@ -131,8 +146,18 @@ class ListViewModel(private val c: AppContainer, val kind: MediaKind) : ViewMode
 }
 
 @Composable
-fun ListScreen(nav: Nav, kind: MediaKind) {
-    val vm = appViewModel(key = "list-$kind") { ListViewModel(it, kind) }
+fun ListScreen(nav: Nav, kind: MediaKind, other: OtherList? = null) {
+    if (other == null) { ListContent(nav, kind, null); return }
+    // Lista de outra pessoa: as notas aparecem no formato dela, sem dar nota nem +1.
+    val s = LocalSettings.current
+    androidx.compose.runtime.CompositionLocalProvider(
+        LocalSettings provides s.copy(primaryScore = other.system ?: s.primaryScore, secondaryScore = null, gridScore = false),
+    ) { ListContent(nav, kind, other) }
+}
+
+@Composable
+private fun ListContent(nav: Nav, kind: MediaKind, other: OtherList?) {
+    val vm = appViewModel(key = "list-$kind-${other?.userId ?: "eu"}") { ListViewModel(it, kind, other) }
     val entries by vm.entries.collectAsStateWithLifecycle()
     val filter by vm.filter.collectAsStateWithLifecycle()
     val sort by vm.sort.collectAsStateWithLifecycle()
@@ -145,7 +170,15 @@ fun ListScreen(nav: Nav, kind: MediaKind) {
     var filterSheet by remember { mutableStateOf(false) }
 
     Column(Modifier.fillMaxSize()) {
-        TopBar(if (kind == MediaKind.ANIME) t("Anime") else t("Mangá"), onBack = nav::back) {
+        TopBar(
+            when {
+                other != null && kind == MediaKind.ANIME -> t("Anime de {0}", other.name)
+                other != null -> t("Mangá de {0}", other.name)
+                kind == MediaKind.ANIME -> t("Anime")
+                else -> t("Mangá")
+            },
+            onBack = nav::back,
+        ) {
             dev.viko.listaanimes.ui.components.LayoutToggle(s.gridLayout) { vm.toggleGrid(!s.gridLayout) }
             IconButton(onClick = { searching = !searching; if (!searching) vm.query.value = "" }) { Icon(Icons.Outlined.Search, t("Buscar na lista")) }
             IconButton(onClick = { filterSheet = true }) {
@@ -182,7 +215,7 @@ fun ListScreen(nav: Nav, kind: MediaKind) {
                     val group = filtered.filter { it.entry.status == st }
                     if (group.isEmpty()) return@forEach
                     item(key = "h-$st") { dev.viko.listaanimes.ui.components.StatusHeader(st, kind, group.size) }
-                    val plus = st == ListStatus.CURRENT || st == ListStatus.REPEATING
+                    val plus = (st == ListStatus.CURRENT || st == ListStatus.REPEATING) && other == null
                     if (s.gridLayout) {
                         items(group.chunked(3), key = { "g-${it.first().entry.mediaId}" }) { rowItems ->
                             dev.viko.listaanimes.ui.components.GridRow(rowItems, 3) { row ->
