@@ -16,6 +16,11 @@ Marque episódios num toque, dê notas do seu jeito, saiba o que sai hoje e acom
 <br/>
 
 <p align="center">
+  <img src="docs/img/apresentacao.gif" width="300" alt="Apresentação do Listonatha: notas do seu jeito, descobrir, perfil e onde baixar" /><br/>
+  <sub><a href="docs/video/listonatha.mp4">Assistir com som</a></sub>
+</p>
+
+<p align="center">
   <img src="docs/img/inicio.png" width="23%" alt="Início" />
   <img src="docs/img/detalhe.png" width="23%" alt="Página de um anime" />
   <img src="docs/img/agenda.png" width="23%" alt="Agenda da semana" />
