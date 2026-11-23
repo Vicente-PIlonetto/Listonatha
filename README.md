@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="docs/img/banner.svg" alt="Listonatha" width="100%" />
+<img src="docs/img/banner.png" alt="Listonatha: sua lista de animes e mangás do AniList, com capturas de tela do app" width="100%" />
 
 <h1>Listonatha</h1>
 
@@ -16,7 +16,7 @@ Marque episódios num toque, dê notas do seu jeito, saiba o que sai hoje e acom
 <br/>
 
 <p align="center">
-  <img src="docs/img/apresentacao.gif" width="300" alt="Apresentação do Listonatha: notas do seu jeito, descobrir, perfil e onde baixar" /><br/>
+  <img src="docs/img/apresentacao.webp" width="300" alt="Apresentação do Listonatha: +1 num toque, notas do seu jeito, agenda, descobrir, social e perfil" /><br/>
   <sub><a href="docs/video/listonatha.mp4">Assistir com som</a></sub>
 </p>
 
