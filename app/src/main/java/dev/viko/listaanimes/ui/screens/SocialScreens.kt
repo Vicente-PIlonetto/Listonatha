@@ -534,8 +534,17 @@ private fun Stat(value: String, label: String) {
 private fun ProfileList(vm: ProfileViewModel, nav: Nav) {
     val list by vm.list.collectAsStateWithLifecycle()
     val kind by vm.listKind.collectAsStateWithLifecycle()
+    val pr = vm.profile.collectAsStateWithLifecycle().value
+    val s = dev.viko.listaanimes.ui.components.LocalSettings.current
+    // As notas aparecem no formato que a pessoa usa no AniList.
+    androidx.compose.runtime.CompositionLocalProvider(
+        dev.viko.listaanimes.ui.components.LocalSettings provides s.copy(primaryScore = pr?.scoreSystem ?: s.primaryScore, secondaryScore = null, gridScore = false),
+    ) {
     Column {
         Segmented(listOf(t("Anime"), t("Mangá")), kind.ordinal, { vm.loadList(MediaKind.entries[it]) }, Modifier.padding(horizontal = 20.dp, vertical = 6.dp))
+        if (pr != null) dev.viko.listaanimes.ui.components.LinkRow(
+            if (kind == MediaKind.ANIME) t("Abrir lista completa de anime") else t("Abrir lista completa de mangá"),
+        ) { nav.userList(pr.id, pr.name, kind, pr.scoreSystem) }
         val l = list
         if (l == null) { dev.viko.listaanimes.ui.components.SkeletonRows(5); return@Column }
         if (l.isEmpty()) EmptyState(t("Lista vazia ou privada."))
@@ -554,6 +563,7 @@ private fun ProfileList(vm: ProfileViewModel, nav: Nav) {
             }
         }
     }
+}
 }
 
 // ---------------- Seguidores / seguindo / busca ----------------

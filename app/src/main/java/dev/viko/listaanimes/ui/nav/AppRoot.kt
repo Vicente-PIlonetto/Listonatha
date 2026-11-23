@@ -117,6 +117,9 @@ class Nav(private val c: NavHostController) {
     fun back() { c.popBackStack() }
     fun detail(id: Int, coverKey: String? = null) = c.navigate("detail/$id?k=${Uri.encode(coverKey.orEmpty())}")
     fun list(kind: MediaKind) = c.navigate("list/${kind.name}")
+    /** Lista de outra pessoa, só para ver, com as notas no formato dela. */
+    fun userList(userId: Int, name: String, kind: MediaKind, system: dev.viko.listaanimes.domain.score.ScoreSystem?) =
+        c.navigate("userlist/$userId/${kind.name}?name=${Uri.encode(name)}&system=${system?.name.orEmpty()}")
     fun search(kind: MediaKind) = c.navigate("search/${kind.name}")
     fun browse(preset: String, kind: MediaKind, country: String? = null, formats: List<String> = emptyList()) =
         c.navigate("browse/$preset/${kind.name}?country=${country.orEmpty()}&formats=${formats.joinToString(",")}")
@@ -366,6 +369,20 @@ private fun NavGraphBuilder.graph(nav: Nav) {
     screen("social") { SocialScreen(nav) }
     screen("you") { YouScreen(nav) }
     screen("list/{kind}") { ListScreen(nav, MediaKind.valueOf(it.arguments!!.getString("kind")!!)) }
+    screen(
+        "userlist/{userId}/{kind}?name={name}&system={system}",
+        listOf(
+            navArgument("userId") { type = NavType.IntType },
+            navArgument("name") { type = NavType.StringType; defaultValue = "" },
+            navArgument("system") { type = NavType.StringType; defaultValue = "" },
+        ),
+    ) {
+        val a = it.arguments!!
+        ListScreen(
+            nav, MediaKind.valueOf(a.getString("kind")!!),
+            dev.viko.listaanimes.ui.screens.OtherList(a.getInt("userId"), a.getString("name").orEmpty(), dev.viko.listaanimes.domain.score.ScoreSystem.parse(a.getString("system"))),
+        )
+    }
     screen("detail/{id}?k={k}", listOf(
         navArgument("id") { type = NavType.IntType },
         navArgument("k") { type = NavType.StringType; defaultValue = "" },

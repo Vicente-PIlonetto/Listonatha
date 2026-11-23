@@ -46,6 +46,7 @@ query UserProfile($id: Int, $name: String) {
     id name about(asHtml: false) bannerImage isFollowing isFollower
     avatar { large }
     options { profileColor }
+    mediaListOptions { scoreFormat }
     statistics {
       anime { count meanScore minutesWatched episodesWatched }
       manga { count meanScore chaptersRead volumesRead }
@@ -89,7 +90,7 @@ query FollowingOnMedia($mediaId: Int!) {
   Page(perPage: 30) {
     mediaList(mediaId: $mediaId, isFollowing: true, sort: [UPDATED_TIME_DESC]) {
       status score(format: POINT_100) progress
-      user { ...UserRef }
+      user { ...UserRef mediaListOptions { scoreFormat } }
     }
   }
 }

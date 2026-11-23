@@ -94,6 +94,7 @@ class SocialRepository(private val api: AniListApi) {
             favManga = u.favourites?.manga?.nodes.orEmpty().mapNotNull { it?.mediaCore?.toMedia() },
             favCharacters = u.favourites?.characters?.nodes.orEmpty().mapNotNull { n -> n?.let { FavCharacter(it.id, it.name?.full ?: return@mapNotNull null, it.image?.medium) } },
             profileColor = u.options?.profileColor,
+            scoreSystem = dev.viko.listaanimes.domain.score.ScoreSystem.fromAniList(u.mediaListOptions?.scoreFormat?.rawValue),
         )
     }
 
@@ -171,7 +172,7 @@ class SocialRepository(private val api: AniListApi) {
     suspend fun friendsOnMedia(mediaId: Int): List<FriendEntry> =
         api.run(api.apollo.query(FollowingOnMediaQuery(mediaId))).Page?.mediaList.orEmpty().mapNotNull { e ->
             val u = e?.user?.userRef?.toRef() ?: return@mapNotNull null
-            FriendEntry(u, ListStatus.parse(e.status?.rawValue), (e.score ?: 0.0).toInt(), e.progress ?: 0)
+            FriendEntry(u, ListStatus.parse(e.status?.rawValue), (e.score ?: 0.0).toInt(), e.progress ?: 0, dev.viko.listaanimes.domain.score.ScoreSystem.fromAniList(e.user?.mediaListOptions?.scoreFormat?.rawValue))
         }
 
     // ---------- Fórum ----------

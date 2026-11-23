@@ -16,6 +16,16 @@ enum class ScoreSystem(val label: String) {
 
     companion object {
         fun parse(name: String?): ScoreSystem? = entries.firstOrNull { it.name == name }
+
+        /** Formato de nota que a pessoa usa no AniList (mediaListOptions.scoreFormat). */
+        fun fromAniList(format: String?): ScoreSystem? = when (format) {
+            "POINT_100" -> POINT_100
+            "POINT_10_DECIMAL" -> POINT_10_DECIMAL
+            "POINT_10" -> POINT_10
+            "POINT_5" -> STARS_5
+            "POINT_3" -> SMILEY_3
+            else -> null
+        }
     }
 }
 

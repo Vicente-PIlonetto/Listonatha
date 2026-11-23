@@ -627,5 +627,15 @@
  "Total de animes": "Total anime",
  "Total de mangás": "Total manga",
  "Volumes lidos": "Volumes read",
- "Ver estatísticas": "See statistics"
+ "Ver estatísticas": "See statistics",
+ "Apoiar o projeto (Pix)": "Support the project (Pix)",
+ "O app é gratuito e sem anúncios. Se quiser ajudar, qualquer valor pelo Pix vale.": "The app is free and has no ads. If you want to help, any amount via Pix is welcome.",
+ "Chave aleatória": "Random key",
+ "Código copiado": "Code copied",
+ "Copiar código Pix": "Copy Pix code",
+ "Fechar": "Close",
+ "Anime de {0}": "{0}'s anime",
+ "Mangá de {0}": "{0}'s manga",
+ "Abrir lista completa de anime": "Open full anime list",
+ "Abrir lista completa de mangá": "Open full manga list"
 }

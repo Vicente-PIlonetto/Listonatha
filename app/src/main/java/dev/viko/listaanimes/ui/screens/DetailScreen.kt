@@ -663,7 +663,7 @@ private fun FriendsSection(list: List<dev.viko.listaanimes.data.repo.FriendEntry
                 dev.viko.listaanimes.ui.components.Avatar(f.user.avatar, 48.dp)
                 Text(f.user.name, style = MaterialTheme.typography.labelSmall, maxLines = 1, overflow = TextOverflow.Ellipsis, modifier = Modifier.padding(top = 4.dp))
                 f.status?.let { dev.viko.listaanimes.ui.components.StatusIcon(it, kind, p.textSecondary, 14.dp) }
-                if (f.scoreRaw > 0) dev.viko.listaanimes.ui.components.ScoreGlyph(f.scoreRaw, s.primaryScore, null, 12, 14.dp, p.textSecondary)
+                if (f.scoreRaw > 0) dev.viko.listaanimes.ui.components.ScoreGlyph(f.scoreRaw, f.system ?: s.primaryScore, null, 12, 14.dp, p.textSecondary)
                 else if (f.progress > 0) Text("${f.progress}", style = Mono.style(11), color = p.textTertiary)
             }
         }
