@@ -62,7 +62,7 @@ Se você tem o Komikku, o Mihon ou o Aniyomi, a página da obra mostra <i>Ler em
 <tr>
 <td align="center"><img src="docs/img/icons/social.svg" width="56" alt="" /></td>
 <td><b>Junto com os amigos</b><br/>
-Veja o que seus amigos estão vendo, curta, responda e publique. O fórum do AniList está no app, por categoria se você preferir, e cada obra mostra quem você segue que também está nela.</td>
+Veja o que seus amigos estão vendo, curta, responda e publique. Abra a lista completa de qualquer pessoa, com as notas no formato que ela usa no AniList. O fórum do AniList está no app, por categoria se você preferir, e cada obra mostra quem você segue que também está nela, com a nota de cada um.</td>
 </tr>
 <tr>
 <td align="center"><img src="docs/img/icons/personalizar.svg" width="56" alt="" /></td>
@@ -125,6 +125,20 @@ Fica escondido por padrão. Se você ativar, as capas aparecem desfocadas até v
 ## Privacidade
 
 O Listonatha conversa só com o AniList. Não há anúncios, contas próprias nem coleta de dados. As imagens que você escolhe da galeria para o perfil e as notas especiais ficam apenas no seu celular, e podem ser salvas num backup em *Configurações > Backup*.
+
+## Apoie o projeto
+
+O Listonatha é gratuito, sem anúncios e de código aberto. Se ele te ajuda e você quiser contribuir, qualquer valor pelo Pix vale. No app, fica em *Configurações > Sobre > Apoiar o projeto (Pix)*.
+
+<p align="center"><img src="docs/img/pix.png" width="180" alt="QR Code do Pix" /></p>
+
+Pix copia e cola:
+
+```
+00020126580014br.gov.bcb.pix0136274972f2-15d1-406e-b968-a072d0b6fbaf5204000053039865802BR5917Vicente Pilonetto6009Concordia62070503***630408C6
+```
+
+Chave aleatória: `274972f2-15d1-406e-b968-a072d0b6fbaf` (Vicente Pilonetto)
 
 ## Encontrou um problema ou tem uma ideia?
 
