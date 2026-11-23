@@ -257,6 +257,7 @@ fun AboutSection() {
     Group(null) {
         if (BuildConfig.REPO_URL.isNotBlank()) LinkRow(t("Código-fonte"), icon = Icons.Outlined.Code) { runCatching { uri.openUri(BuildConfig.REPO_URL) } }
         if (BuildConfig.DONATE_URL.isNotBlank()) LinkRow(t("Apoiar o projeto"), icon = Icons.Outlined.Favorite, iconColor = Color(0xFFE0457B)) { runCatching { uri.openUri(BuildConfig.DONATE_URL) } }
+        dev.viko.listaanimes.ui.components.PixDonateRow()
         LinkRow("AniList", icon = Icons.AutoMirrored.Outlined.OpenInNew) { runCatching { uri.openUri("https://anilist.co") } }
     }
     Group(t("Licenças")) {

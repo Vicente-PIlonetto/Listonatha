@@ -30,6 +30,10 @@ android {
         // Links opcionais da página Sobre (local.properties): repositório e apoio ao projeto.
         buildConfigField("String", "REPO_URL", "\"${localProps.getProperty("REPO_URL", "").trim()}\"")
         buildConfigField("String", "DONATE_URL", "\"${localProps.getProperty("DONATE_URL", "").trim()}\"")
+        // Doação por Pix na tela Sobre (opcional; sem a chave, o botão não aparece).
+        buildConfigField("String", "PIX_KEY", "\"${localProps.getProperty("PIX_KEY", "").trim()}\"")
+        buildConfigField("String", "PIX_NAME", "\"${localProps.getProperty("PIX_NAME", "").trim()}\"")
+        buildConfigField("String", "PIX_CITY", "\"${localProps.getProperty("PIX_CITY", "").trim()}\"")
         buildConfigField("long", "BUILD_TIME", "${System.currentTimeMillis()}L")
         manifestPlaceholders["authScheme"] = "listaanimes"
     }
@@ -111,6 +115,7 @@ dependencies {
     implementation(libs.apollo.runtime)
     implementation(libs.okhttp)
     implementation(libs.coil.compose)
+    implementation(libs.zxing.core)
     implementation(libs.coil.network.okhttp)
     implementation(libs.coil.gif)
     implementation(libs.kotlinx.serialization.json)
